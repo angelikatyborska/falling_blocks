@@ -1,0 +1,32 @@
+.board {
+  margin: 0 auto;
+}
+
+.board-row {
+  display: flex;
+  justify-content: center;
+}
+
+.block-part {
+  width: 30px;
+  height: 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  flex: 0 0 auto;
+}
+
+.board-row:first-child .block-part {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.block-part:first-child {
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.block-part--square {
+  background-color: #f25d2b;
+}
+
+.block-part--long {
+  background-color: #f4e109;
+}

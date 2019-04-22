@@ -1,13 +1,22 @@
 defmodule FallingBlocksWeb.GameLive do
   use Phoenix.LiveView
 
-  alias FallingBlocks.Game
+  alias FallingBlocks.{Game, Board}
 
   def render(assigns) do
     ~L"""
     <a phx-click="start">Start</a>
 
-    <pre><%= inspect(@game_state.board) %></pre>
+    <div class="board">
+      <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
+      <div class="board-row">
+        <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
+        <% block_type = Board.block_type_at(@game_state.board, {column, row}) %>
+        <div class="block-part block-part--<%= block_type %>"></div>
+        <% end) %>
+      </div>
+      <% end) %>
+    </div>
     """
   end
 

@@ -16,6 +16,22 @@ defmodule FallingBlocks.Board do
           width: number()
         }
 
+  @doc """
+    Useful for printing the board. `nil` means no block at those coordinates.
+  """
+  @spec block_type_at(__MODULE__.t(), Coordinates.t()) :: Block.block_type() | nil
+  def block_type_at(board, {x, y}) do
+    block =
+      FallingBlocks.Board.find_static_block_at(board, {x, y}) ||
+        (FallingBlocks.Board.falling_block_at?(board, {x, y}) && board.falling_block)
+
+    if block do
+      block.type
+    else
+      nil
+    end
+  end
+
   @spec find_static_block_at(__MODULE__.t(), Coordinates.t()) :: Block.t() | nil
   def find_static_block_at(board, {x, y}) do
     Enum.find(board.static_blocks, fn %{parts: parts} ->
@@ -69,12 +85,7 @@ defimpl Inspect, for: FallingBlocks.Board do
     |> Enum.map(fn row ->
       0..(board.width - 1)
       |> Enum.map(fn column ->
-        block =
-          FallingBlocks.Board.find_static_block_at(board, {column, row}) ||
-            (FallingBlocks.Board.falling_block_at?(board, {column, row}) && board.falling_block) ||
-            nil
-
-        block_symbol(block)
+        block_symbol(FallingBlocks.Board.block_type_at(board, {column, row}))
       end)
       |> Enum.join(" ")
     end)
@@ -82,7 +93,7 @@ defimpl Inspect, for: FallingBlocks.Board do
     |> Kernel.<>("\n")
   end
 
-  defp block_symbol(%{type: :square}), do: "*"
-  defp block_symbol(%{type: :long}), do: "o"
+  defp block_symbol(:square), do: "*"
+  defp block_symbol(:long), do: "o"
   defp block_symbol(_), do: "."
 end
