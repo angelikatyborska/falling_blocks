@@ -18,7 +18,7 @@ defmodule FallingBlocksWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    live "/test", TestLive
+    live "/game", GameLive
   end
 
   # Other scopes may use custom stacks.
