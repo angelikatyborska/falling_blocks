@@ -16,6 +16,7 @@ defmodule FallingBlocks.Board do
           width: number()
         }
 
+  @spec find_static_block_at(__MODULE__.t(), Coordinates.t()) :: Block.t() | nil
   def find_static_block_at(board, {x, y}) do
     Enum.find(board.static_blocks, fn %{parts: parts} ->
       Enum.any?(parts, fn part -> part == {x, y} end)

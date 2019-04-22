@@ -4,6 +4,26 @@ defmodule FallingBlocks.BoardTest do
   alias FallingBlocks.Board
   alias FallingBlocks.Block
 
+  test "find_static_block_at" do
+    square1 = Block.square({0, 4})
+    square2 = Block.square({1, 2})
+
+    board = %Board{height: 6, width: 3, static_blocks: [square1, square2]}
+
+    assert Board.find_static_block_at(board, {0, 4}) == square1
+    assert Board.find_static_block_at(board, {1, 4}) == square1
+    assert Board.find_static_block_at(board, {0, 5}) == square1
+    assert Board.find_static_block_at(board, {1, 5}) == square1
+
+    assert Board.find_static_block_at(board, {1, 2}) == square2
+    assert Board.find_static_block_at(board, {2, 2}) == square2
+    assert Board.find_static_block_at(board, {1, 3}) == square2
+    assert Board.find_static_block_at(board, {2, 3}) == square2
+
+    assert Board.find_static_block_at(board, {0, 0}) == nil
+    assert Board.find_static_block_at(board, {1, 1}) == nil
+  end
+
   describe "inspect" do
     test "empty board" do
       empty = %Board{height: 6, width: 3}
