@@ -1,6 +1,8 @@
 defmodule FallingBlocksWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :falling_blocks
 
+  socket "/live", Phoenix.LiveView.Socket
+
   socket "/socket", FallingBlocksWeb.UserSocket,
     websocket: true,
     longpoll: false

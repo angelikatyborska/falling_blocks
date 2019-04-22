@@ -41,6 +41,7 @@ defmodule FallingBlocksWeb do
 
       import FallingBlocksWeb.ErrorHelpers
       import FallingBlocksWeb.Gettext
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
       alias FallingBlocksWeb.Router.Helpers, as: Routes
     end
   end
@@ -50,6 +51,7 @@ defmodule FallingBlocksWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

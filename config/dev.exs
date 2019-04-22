@@ -19,6 +19,9 @@ config :falling_blocks, FallingBlocksWeb.Endpoint,
       "--watch-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
+  ],
+  live_view: [
+    signing_salt: "DGpJcd4S6PimIXHVgW/D851fQoXCX8y8"
   ]
 
 # ## SSL Support
