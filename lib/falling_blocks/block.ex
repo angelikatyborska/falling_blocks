@@ -2,7 +2,7 @@ defmodule FallingBlocks.Block do
   alias FallingBlocks.Coordinates
   import FallingBlocks.Coordinates
 
-  defstruct parts: [], type: nil
+  defstruct parts: [], type: :square
 
   @type block_type :: :square | :long
   @type t :: %__MODULE__{parts: list(Coordinates.t()), type: block_type()}
