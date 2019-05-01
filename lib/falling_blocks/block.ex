@@ -1,29 +1,43 @@
 defmodule FallingBlocks.Block do
-  alias FallingBlocks.Coordinates
-  import FallingBlocks.Coordinates
+  alias FallingBlocks.Coordinates, as: C
 
   defstruct parts: [], type: :square
 
   @type block_type :: :square | :long
-  @type t :: %__MODULE__{parts: list(Coordinates.t()), type: block_type()}
+  @type t :: %__MODULE__{parts: list(C.t()), type: block_type()}
 
   @spec advance(t()) :: t()
   def advance(%__MODULE__{parts: parts}) do
-    %__MODULE__{parts: Enum.map(parts, &down/1)}
+    %__MODULE__{parts: Enum.map(parts, &C.down/1)}
   end
 
-  @spec square(Coordinates.t()) :: t()
-  def square(left_top \\ {0, 0}) do
+  @spec left(t()) :: t()
+  def left(%__MODULE__{parts: parts}) do
+    %__MODULE__{parts: Enum.map(parts, &C.left/1)}
+  end
+
+  @spec right(t()) :: t()
+  def right(%__MODULE__{parts: parts}) do
+    %__MODULE__{parts: Enum.map(parts, &C.right/1)}
+  end
+
+  @spec square(C.t()) :: t()
+  def square(top_left \\ {0, 0}) do
     %__MODULE__{
-      parts: [left_top, left_top |> down, left_top |> down |> right, left_top |> right],
+      parts: [
+        top_left,
+        top_left |> C.down(),
+        top_left |> C.down() |> C.right(),
+        top_left |> C.right()
+      ],
       type: :square
     }
   end
 
-  @spec long(Coordinates.t()) :: t()
-  def long(left_top \\ {0, 0}) do
+  @spec long(C.t()) :: t()
+  def long(top_left \\ {0, 0}) do
     %__MODULE__{
-      parts: [left_top, left_top |> right(1), left_top |> right(2), left_top |> right(3)],
+      parts: [top_left, top_left |> C.right(1), top_left |> C.right(2), top_left |> C.right(3)],
       type: :long
     }
   end

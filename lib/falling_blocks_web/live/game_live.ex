@@ -3,11 +3,12 @@ defmodule FallingBlocksWeb.GameLive do
 
   alias FallingBlocks.{Game, Board}
 
+  @impl true
   def render(assigns) do
     ~L"""
     <a phx-click="start">Start</a>
 
-    <div class="board">
+    <div class="board" phx-keyup="move" phx-target="window">
       <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
       <div class="board-row">
         <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
@@ -20,6 +21,7 @@ defmodule FallingBlocksWeb.GameLive do
     """
   end
 
+  @impl true
   def mount(_assigns, socket) do
     socket =
       if connected?(socket) do
@@ -34,11 +36,30 @@ defmodule FallingBlocksWeb.GameLive do
     {:ok, socket}
   end
 
+  @impl true
   def handle_event("start", _, socket) do
     :ok = Game.start(socket.assigns.game)
     {:noreply, socket}
   end
 
+  @impl true
+  def handle_event("move", "ArrowLeft", socket) do
+    :ok = Game.move(socket.assigns.game, :left)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("move", "ArrowRight", socket) do
+    :ok = Game.move(socket.assigns.game, :right)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("move", _, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info(game_state, socket) do
     socket = assign(socket, :game_state, game_state)
     {:noreply, socket}

@@ -16,6 +16,8 @@ defmodule FallingBlocks.Board do
           width: number()
         }
 
+  @type direction :: :left | :right
+
   @doc """
     Useful for printing the board. `nil` means no block at those coordinates.
   """
@@ -55,23 +57,40 @@ defmodule FallingBlocks.Board do
   def advance(board) do
     with %Block{} <- board.falling_block,
          new_board <- %{board | falling_block: Block.advance(board.falling_block)},
-         false <- collisions?(new_board) do
+         {:collisions, false} <- {:collisions, collisions?(new_board)} do
       new_board
     else
       nil ->
         board
 
-      true ->
+      {:collisions, true} ->
         %{board | falling_block: nil, static_blocks: [board.falling_block | board.static_blocks]}
+    end
+  end
+
+  @spec move(__MODULE__.t(), __MODULE__.direction()) :: __MODULE__.t()
+  def move(board, direction) do
+    with %Block{} <- board.falling_block,
+         new_board <- %{board | falling_block: apply(Block, direction, [board.falling_block])},
+         {:collisions, false} <- {:collisions, collisions?(new_board)} do
+      new_board
+    else
+      nil ->
+        board
+
+      {:collisions, true} ->
+        board
     end
   end
 
   defp collisions?(board) do
     with %Block{} <- board.falling_block do
       board.falling_block.parts
-      |> Enum.any?(fn {_x, y} = part ->
+      |> Enum.any?(fn {x, y} = part ->
         find_static_block_at(board, part) ||
-          y >= board.height
+          y >= board.height ||
+          x >= board.width ||
+          x < 0
       end)
     else
       _ -> false

@@ -143,6 +143,121 @@ defmodule FallingBlocks.BoardTest do
     end
   end
 
+  describe "move" do
+    test "it does nothing if no falling block" do
+      square1 = Block.square({0, 4})
+      square2 = Block.square({1, 2})
+
+      board = %Board{height: 6, width: 3, static_blocks: [square1, square2], falling_block: nil}
+
+      assert Board.move(board, :right) == board
+    end
+
+    test "it moves the falling block to the left" do
+      square = Block.square({2, 0})
+      board = %Board{height: 3, width: 6, static_blocks: [], falling_block: square}
+
+      board2 = Board.move(board, :left)
+      board3 = Board.move(board2, :left)
+
+      assert inspect(board) == ~s"""
+             . . * * . .
+             . . * * . .
+             . . . . . .
+             """
+
+      assert inspect(board2) == ~s"""
+             . * * . . .
+             . * * . . .
+             . . . . . .
+             """
+
+      assert inspect(board3) == ~s"""
+             * * . . . .
+             * * . . . .
+             . . . . . .
+             """
+    end
+
+    test "it moves the falling block to the right" do
+      square = Block.square({2, 0})
+      board = %Board{height: 3, width: 6, static_blocks: [], falling_block: square}
+
+      board2 = Board.move(board, :right)
+      board3 = Board.move(board2, :right)
+
+      assert inspect(board) == ~s"""
+             . . * * . .
+             . . * * . .
+             . . . . . .
+             """
+
+      assert inspect(board2) == ~s"""
+             . . . * * .
+             . . . * * .
+             . . . . . .
+             """
+
+      assert inspect(board3) == ~s"""
+             . . . . * *
+             . . . . * *
+             . . . . . .
+             """
+    end
+
+    test "it stops on board edges" do
+      square = Block.square({0, 0})
+      board = %Board{height: 3, width: 2, static_blocks: [], falling_block: square}
+
+      board2 = Board.move(board, :right)
+      board3 = Board.move(board2, :right)
+      board4 = Board.move(board3, :left)
+      board5 = Board.move(board4, :left)
+
+      result = ~s"""
+      * *
+      * *
+      . .
+      """
+
+      assert inspect(board) == result
+      assert inspect(board2) == result
+      assert inspect(board3) == result
+      assert inspect(board4) == result
+      assert inspect(board5) == result
+    end
+
+    test "it stops on block edges" do
+      square = Block.square({2, 0})
+      square2 = Block.square({0, 1})
+      square3 = Block.square({4, 1})
+
+      board = %Board{
+        height: 3,
+        width: 6,
+        static_blocks: [square2, square3],
+        falling_block: square
+      }
+
+      board2 = Board.move(board, :right)
+      board3 = Board.move(board2, :right)
+      board4 = Board.move(board3, :left)
+      board5 = Board.move(board4, :left)
+
+      result = ~s"""
+      . . * * . .
+      * * * * * *
+      * * . . * *
+      """
+
+      assert inspect(board) == result
+      assert inspect(board2) == result
+      assert inspect(board3) == result
+      assert inspect(board4) == result
+      assert inspect(board5) == result
+    end
+  end
+
   describe "inspect" do
     test "empty board" do
       empty = %Board{height: 6, width: 3}
