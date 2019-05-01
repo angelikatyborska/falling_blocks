@@ -32,6 +32,11 @@ defmodule FallingBlocks.Game do
     GenServer.call(pid, {:move, direction})
   end
 
+  @spec advance(pid()) :: :ok
+  def advance(pid) do
+    GenServer.call(pid, :advance)
+  end
+
   # This is only exposed so that the LiveView can render a new game during the initial HTTP-only connection
   # without starting the game process.
   def new_game() do
@@ -76,15 +81,15 @@ defmodule FallingBlocks.Game do
   end
 
   @impl true
-  def handle_info(:tick, game) do
-    new_board =
-      if game.board.falling_block do
-        Board.advance(game.board)
-      else
-        # TODO: implement a block queue
-        %{game.board | falling_block: Block.square({4, 0})}
-      end
+  def handle_call(:advance, _from, game) do
+    new_board = do_advance(game)
+    send(self(), :inform_subscriber)
+    {:reply, :ok, %{game | board: new_board}}
+  end
 
+  @impl true
+  def handle_info(:tick, game) do
+    new_board = do_advance(game)
     send(self(), :inform_subscriber)
     {:noreply, %{game | board: new_board}}
   end
@@ -102,5 +107,14 @@ defmodule FallingBlocks.Game do
   def handle_info(message, game) do
     Logger.warn("Unexpected message: #{inspect(message)}")
     {:noreply, game}
+  end
+
+  defp do_advance(game) do
+    if game.board.falling_block do
+      Board.advance(game.board)
+    else
+      # TODO: implement a block queue
+      %{game.board | falling_block: Block.square({4, 0})}
+    end
   end
 end
