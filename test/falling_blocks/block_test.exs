@@ -54,6 +54,23 @@ defmodule FallingBlocks.BlockTest do
     end
   end
 
+  describe "up" do
+    test "it moves a block up" do
+      square = Block.square({1, 2})
+      assert square.parts |> Enum.find(&(&1 == {1, 2}))
+      assert square.parts |> Enum.find(&(&1 == {1, 3}))
+      assert square.parts |> Enum.find(&(&1 == {2, 2}))
+      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+
+      square = Block.up(square)
+
+      assert square.parts |> Enum.find(&(&1 == {1, 1}))
+      assert square.parts |> Enum.find(&(&1 == {1, 2}))
+      assert square.parts |> Enum.find(&(&1 == {2, 1}))
+      assert square.parts |> Enum.find(&(&1 == {2, 2}))
+    end
+  end
+
   describe "square" do
     test "it puts a square" do
       square = Block.square({1, 2})

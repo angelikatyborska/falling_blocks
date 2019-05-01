@@ -5,12 +5,31 @@ defmodule FallingBlocks.BoardTest do
   alias FallingBlocks.Block
 
   describe "set_falling_block" do
+    test "game over if there is a conflict, puts as much of block as possible" do
+      square = Block.square({1, 1})
+      board = %Board{height: 3, width: 6, static_blocks: [square]}
+
+      {:game_over, board2} = Board.set_falling_block(board, :square)
+
+      assert inspect(board) == ~s"""
+             . . . . . .
+             . * * . . .
+             . * * . . .
+             """
+
+      assert inspect(board2) == ~s"""
+             . . * * . .
+             . * * . . .
+             . * * . . .
+             """
+    end
+
     test "it puts square in the middle" do
       odd_board = %Board{height: 3, width: 5}
       even_board = %Board{height: 3, width: 6}
 
-      new_odd_board = Board.set_falling_block(odd_board, :square)
-      new_even_board = Board.set_falling_block(even_board, :square)
+      {:ok, new_odd_board} = Board.set_falling_block(odd_board, :square)
+      {:ok, new_even_board} = Board.set_falling_block(even_board, :square)
 
       assert inspect(new_odd_board) == ~s"""
              . * * . .
@@ -29,8 +48,8 @@ defmodule FallingBlocks.BoardTest do
       odd_board = %Board{height: 3, width: 5}
       even_board = %Board{height: 3, width: 6}
 
-      new_odd_board = Board.set_falling_block(odd_board, :long)
-      new_even_board = Board.set_falling_block(even_board, :long)
+      {:ok, new_odd_board} = Board.set_falling_block(odd_board, :long)
+      {:ok, new_even_board} = Board.set_falling_block(even_board, :long)
 
       assert inspect(new_odd_board) == ~s"""
              o o o o .

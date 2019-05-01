@@ -62,7 +62,7 @@ defmodule FallingBlocks.Game do
   def handle_call(:start, {from_pid, _from_ref}, game) do
     if game.state == :new do
       {block_type, queue} = BlockQueue.pop(game.block_queue)
-      board = Board.set_falling_block(game.board, block_type)
+      {:ok, board} = Board.set_falling_block(game.board, block_type)
       send(self(), :inform_subscriber)
       :timer.send_interval(@tick, self(), :tick)
 
@@ -93,14 +93,12 @@ defmodule FallingBlocks.Game do
   @impl true
   def handle_call(:advance, _from, game) do
     game = do_advance(game)
-    send(self(), :inform_subscriber)
     {:reply, :ok, game}
   end
 
   @impl true
   def handle_info(:tick, game) do
     game = do_advance(game)
-    send(self(), :inform_subscriber)
     {:noreply, game}
   end
 
@@ -120,13 +118,28 @@ defmodule FallingBlocks.Game do
   end
 
   defp do_advance(game) do
-    if game.board.falling_block do
-      new_board = Board.advance(game.board)
-      %{game | board: new_board}
+    if game.state == :running do
+      game =
+        if game.board.falling_block do
+          new_board = Board.advance(game.board)
+          %{game | board: new_board}
+        else
+          {block_type, queue} = BlockQueue.pop(game.block_queue)
+
+          case Board.set_falling_block(game.board, block_type) do
+            {:ok, board} ->
+              %{game | board: board, block_queue: queue}
+
+            {:game_over, board} ->
+              %{game | state: :over, board: board, block_queue: queue}
+          end
+        end
+
+      send(self(), :inform_subscriber)
+
+      game
     else
-      {block_type, queue} = BlockQueue.pop(game.block_queue)
-      board = Board.set_falling_block(game.board, block_type)
-      %{game | board: board, block_queue: queue}
+      game
     end
   end
 end

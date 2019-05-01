@@ -26,6 +26,11 @@ defmodule FallingBlocks.Block do
     %{block | parts: Enum.map(parts, &C.right/1)}
   end
 
+  @spec up(t()) :: t()
+  def up(%__MODULE__{parts: parts} = block) do
+    %{block | parts: Enum.map(parts, &C.up/1)}
+  end
+
   @spec square(C.t()) :: t()
   def square(top_left \\ {0, 0}) do
     %__MODULE__{
