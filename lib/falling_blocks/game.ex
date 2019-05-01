@@ -3,12 +3,17 @@ defmodule FallingBlocks.Game do
 
   require Logger
 
-  alias FallingBlocks.{Board, Block}
+  alias FallingBlocks.{Board, BlockQueue}
 
-  defstruct board: nil, subscriber: nil, state: :new
+  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil
 
   @type state :: :new | :running | :over
-  @type t() :: %__MODULE__{board: Board.t(), subscriber: pid(), state: state()}
+  @type t() :: %__MODULE__{
+          board: Board.t(),
+          subscriber: pid(),
+          state: state(),
+          block_queue: BlockQueue.t()
+        }
   @tick 500
 
   # API ######################################################
@@ -40,10 +45,10 @@ defmodule FallingBlocks.Game do
   # This is only exposed so that the LiveView can render a new game during the initial HTTP-only connection
   # without starting the game process.
   def new_game() do
-    square = Block.square({4, 0})
-    board = %Board{height: 20, width: 10, static_blocks: [], falling_block: square}
+    queue = BlockQueue.new()
+    board = %Board{height: 20, width: 10, static_blocks: []}
 
-    %__MODULE__{board: board}
+    %__MODULE__{board: board, block_queue: queue}
   end
 
   # Callbacks ######################################################
@@ -56,8 +61,13 @@ defmodule FallingBlocks.Game do
   @impl true
   def handle_call(:start, {from_pid, _from_ref}, game) do
     if game.state == :new do
+      {block_type, queue} = BlockQueue.pop(game.block_queue)
+      board = Board.set_falling_block(game.board, block_type)
+      send(self(), :inform_subscriber)
       :timer.send_interval(@tick, self(), :tick)
-      {:reply, :ok, %{game | state: :running, subscriber: from_pid}}
+
+      {:reply, :ok,
+       %{game | state: :running, subscriber: from_pid, board: board, block_queue: queue}}
     else
       {:reply, :ok, game}
     end
@@ -82,16 +92,16 @@ defmodule FallingBlocks.Game do
 
   @impl true
   def handle_call(:advance, _from, game) do
-    new_board = do_advance(game)
+    game = do_advance(game)
     send(self(), :inform_subscriber)
-    {:reply, :ok, %{game | board: new_board}}
+    {:reply, :ok, game}
   end
 
   @impl true
   def handle_info(:tick, game) do
-    new_board = do_advance(game)
+    game = do_advance(game)
     send(self(), :inform_subscriber)
-    {:noreply, %{game | board: new_board}}
+    {:noreply, game}
   end
 
   @impl true
@@ -111,10 +121,12 @@ defmodule FallingBlocks.Game do
 
   defp do_advance(game) do
     if game.board.falling_block do
-      Board.advance(game.board)
+      new_board = Board.advance(game.board)
+      %{game | board: new_board}
     else
-      # TODO: implement a block queue
-      %{game.board | falling_block: Block.square({4, 0})}
+      {block_type, queue} = BlockQueue.pop(game.block_queue)
+      board = Board.set_falling_block(game.board, block_type)
+      %{game | board: board, block_queue: queue}
     end
   end
 end

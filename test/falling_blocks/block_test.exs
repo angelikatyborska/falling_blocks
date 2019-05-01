@@ -77,4 +77,11 @@ defmodule FallingBlocks.BlockTest do
       assert long.parts |> Enum.find(&(&1 == {5, 1}))
     end
   end
+
+  describe "width" do
+    test "it counts the width" do
+      assert Block.width(:long) == 4
+      assert Block.width(:square) == 2
+    end
+  end
 end

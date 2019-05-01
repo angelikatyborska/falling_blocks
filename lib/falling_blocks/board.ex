@@ -18,6 +18,17 @@ defmodule FallingBlocks.Board do
 
   @type direction :: :left | :right
 
+  @spec set_falling_block(%__MODULE__{falling_block: nil}, Block.block_type()) :: __MODULE__.t()
+  def set_falling_block(board, block_type) do
+    if board.falling_block do
+      raise "Cannot set falling block, it already exists"
+    else
+      left = trunc((board.width - Block.width(block_type)) / 2)
+      falling_block = apply(Block, block_type, [{left, 0}])
+      %{board | falling_block: falling_block}
+    end
+  end
+
   @doc """
     Useful for printing the board. `nil` means no block at those coordinates.
   """

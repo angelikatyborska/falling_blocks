@@ -4,6 +4,50 @@ defmodule FallingBlocks.BoardTest do
   alias FallingBlocks.Board
   alias FallingBlocks.Block
 
+  describe "set_falling_block" do
+    test "it puts square in the middle" do
+      odd_board = %Board{height: 3, width: 5}
+      even_board = %Board{height: 3, width: 6}
+
+      new_odd_board = Board.set_falling_block(odd_board, :square)
+      new_even_board = Board.set_falling_block(even_board, :square)
+
+      assert inspect(new_odd_board) == ~s"""
+             . * * . .
+             . * * . .
+             . . . . .
+             """
+
+      assert inspect(new_even_board) == ~s"""
+             . . * * . .
+             . . * * . .
+             . . . . . .
+             """
+    end
+
+    test "it puts long in the middle" do
+      odd_board = %Board{height: 3, width: 5}
+      even_board = %Board{height: 3, width: 6}
+
+      new_odd_board = Board.set_falling_block(odd_board, :long)
+      new_even_board = Board.set_falling_block(even_board, :long)
+
+      assert inspect(new_odd_board) == ~s"""
+             o o o o .
+             . . . . .
+             . . . . .
+             """
+
+      assert inspect(new_even_board) == ~s"""
+             . o o o o .
+             . . . . . .
+             . . . . . .
+             """
+    end
+
+    # TODO: add more tests for new types of blocks and rotated blocks
+  end
+
   test "find_static_block_at" do
     square1 = Block.square({0, 4})
     square2 = Block.square({1, 2})
@@ -35,37 +79,34 @@ defmodule FallingBlocks.BoardTest do
     end
 
     test "it advances the falling block" do
-      square = Block.square({0, 0})
-      board = %Board{height: 6, width: 3, static_blocks: [], falling_block: square}
+      long = Block.long({0, 0})
+      board = %Board{height: 5, width: 4, static_blocks: [], falling_block: long}
 
       board2 = Board.advance(board)
       board3 = Board.advance(board2)
 
       assert inspect(board) == ~s"""
-             * * .
-             * * .
-             . . .
-             . . .
-             . . .
-             . . .
+             o o o o
+             . . . .
+             . . . .
+             . . . .
+             . . . .
              """
 
       assert inspect(board2) == ~s"""
-             . . .
-             * * .
-             * * .
-             . . .
-             . . .
-             . . .
+             . . . .
+             o o o o
+             . . . .
+             . . . .
+             . . . .
              """
 
       assert inspect(board3) == ~s"""
-             . . .
-             . . .
-             * * .
-             * * .
-             . . .
-             . . .
+             . . . .
+             . . . .
+             o o o o
+             . . . .
+             . . . .
              """
     end
 
