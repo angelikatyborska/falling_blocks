@@ -1,10 +1,12 @@
 defmodule FallingBlocks.Block do
+  require Integer
   alias FallingBlocks.Coordinates, as: C
 
-  defstruct parts: [], type: nil
+  defstruct parts: [], type: nil, rotation: 0
 
   @type block_type :: :o | :i | :t | :j | :l | :z | :s
-  @type t :: %__MODULE__{parts: list(C.t()), type: block_type()}
+  @type rotation :: 0 | 1 | 2 | 3
+  @type t :: %__MODULE__{parts: list(C.t()), type: block_type(), rotation: rotation()}
 
   @spec block_types() :: list(block_type())
   def block_types() do
@@ -153,14 +155,38 @@ defmodule FallingBlocks.Block do
   @doc """
     Counts how many rows a block of a given type will occupy.
   """
-  @spec width(__MODULE__.block_type()) :: integer()
-  def width(block_type) do
-    __MODULE__
-    |> apply(block_type, [{0, 0}])
+  @spec width(__MODULE__.block_type() | __MODULE__.t()) :: integer()
+  def width(%__MODULE__{} = block) do
+    block
     |> Map.get(:parts)
     |> Enum.map(&elem(&1, 0))
     |> Enum.uniq()
     |> Enum.count()
+  end
+
+  def width(block_type) do
+    # TODO: check if still needed
+    __MODULE__
+    |> apply(block_type, [{0, 0}])
+    |> width
+  end
+
+  @doc """
+    Counts how many rows a block of a given type will occupy.
+  """
+  @spec height(__MODULE__.block_type() | __MODULE__.t()) :: integer()
+  def height(%__MODULE__{} = block) do
+    block
+    |> Map.get(:parts)
+    |> Enum.map(&elem(&1, 1))
+    |> Enum.uniq()
+    |> Enum.count()
+  end
+
+  def height(block_type) do
+    __MODULE__
+    |> apply(block_type, [{0, 0}])
+    |> height
   end
 
   @doc """
@@ -195,5 +221,81 @@ defmodule FallingBlocks.Block do
     block.parts
     |> Enum.map(&elem(&1, 1))
     |> Enum.uniq()
+  end
+
+  @doc """
+    Rotates a block.
+  """
+  @spec rotate(t()) :: t()
+  def rotate(%__MODULE__{type: :i} = block) do
+    %{block | rotation: new_rotation(block)}
+  end
+
+  def rotate(%__MODULE__{type: :o} = block) do
+    %{block | rotation: new_rotation(block)}
+  end
+
+  def rotate(block) do
+    rotation_point = rotation_point(block)
+
+    parts =
+      block.parts
+      |> Enum.map(&C.rotate_90deg_cw(&1, rotation_point))
+
+    %{block | rotation: new_rotation(block), parts: parts}
+  end
+
+  defp new_rotation(block) do
+    block.rotation
+    |> Kernel.+(1)
+    |> rem(4)
+  end
+
+  defp rotation_point(block) do
+    width = width(block)
+    height = height(block)
+
+    dx =
+      if Integer.is_odd(width) do
+        trunc(width / 2)
+      else
+        case block.rotation do
+          0 -> trunc(width / 2)
+          1 -> trunc((width - 1) / 2)
+          2 -> trunc((width - 1) / 2)
+          3 -> trunc(width / 2)
+        end
+      end
+
+    dy =
+      if Integer.is_odd(height) do
+        trunc(height / 2)
+      else
+        case block.rotation do
+          0 -> trunc(height / 2)
+          1 -> trunc((height - 1) / 2)
+          2 -> trunc((height - 1) / 2)
+          3 -> trunc(height / 2)
+        end
+      end
+
+    block
+    |> top_left()
+    |> C.right(dx)
+    |> C.down(dy)
+  end
+
+  defp top_left(block) do
+    top =
+      block.parts
+      |> Enum.map(& elem(&1, 1))
+      |> Enum.min()
+
+    left =
+      block.parts
+      |> Enum.map(& elem(&1, 0))
+      |> Enum.min()
+
+    {left, top}
   end
 end

@@ -30,6 +30,7 @@ defmodule FallingBlocksWeb.GameLive do
       TODO:
       <ul>
         <li>rotation</li>
+        <li>rotation as part of the queue</li>
         <li>restart</li>
         <li>high score in cookies</li>
         <li>design (azulejo?)</li>
