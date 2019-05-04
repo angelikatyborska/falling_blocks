@@ -24,11 +24,11 @@
 }
 
 .block-part--o {
-  background-color: #f25d2b;
+  background-color: #8b91dd;
 }
 
 .block-part--i {
-  background-color: #f4e109;
+  background-color: #efb26b;
 }
 
 .block-part--t {
@@ -41,4 +41,12 @@
 
 .block-part--l {
   background-color: #72b9db;
+}
+
+.block-part--z {
+  background-color: #e084c4;
+}
+
+.block-part--s {
+  background-color: #e09084;
 }

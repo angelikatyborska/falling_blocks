@@ -51,6 +51,28 @@ defmodule FallingBlocks.Board.InspectTest do
              """
     end
 
+    test "a Z" do
+      block = Block.z({0, 1})
+      board = %Board{height: 3, width: 3, static_blocks: [block]}
+
+      assert inspect(board) == ~s"""
+             . . .
+             z z .
+             . z z
+             """
+    end
+
+    test "an S" do
+      block = Block.s({0, 1})
+      board = %Board{height: 3, width: 3, static_blocks: [block]}
+
+      assert inspect(board) == ~s"""
+             . . .
+             . s s
+             s s .
+             """
+    end
+
     test "two static Os" do
       blocks = [
         Block.o({0, 4}),
