@@ -85,7 +85,7 @@ defmodule FallingBlocks.Board do
   @spec advance(__MODULE__.t()) :: {__MODULE__.t(), integer()}
   def advance(board) do
     with %Block{} <- board.falling_block,
-         new_board <- %{board | falling_block: Block.advance(board.falling_block)},
+         new_board <- %{board | falling_block: Block.down(board.falling_block)},
          {:collisions, false} <- {:collisions, collisions?(new_board)} do
       {new_board, 0}
     else

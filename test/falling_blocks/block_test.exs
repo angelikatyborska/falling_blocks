@@ -3,7 +3,7 @@ defmodule FallingBlocks.BlockTest do
 
   alias FallingBlocks.Block
 
-  describe "advance" do
+  describe "down" do
     test "it moves a block down" do
       o = Block.o({1, 2})
       assert o.parts |> Enum.find(&(&1 == {1, 2}))
@@ -11,7 +11,7 @@ defmodule FallingBlocks.BlockTest do
       assert o.parts |> Enum.find(&(&1 == {2, 2}))
       assert o.parts |> Enum.find(&(&1 == {2, 3}))
 
-      o = Block.advance(o)
+      o = Block.down(o)
 
       assert o.parts |> Enum.find(&(&1 == {1, 3}))
       assert o.parts |> Enum.find(&(&1 == {1, 4}))

@@ -11,26 +11,41 @@ defmodule FallingBlocks.Block do
     [:o, :i, :t, :j, :l, :z, :s]
   end
 
-  @spec advance(t()) :: t()
-  def advance(%__MODULE__{parts: parts} = block) do
+  @doc """
+    It moves the block down
+  """
+  @spec down(t()) :: t()
+  def down(%__MODULE__{parts: parts} = block) do
     %{block | parts: Enum.map(parts, &C.down/1)}
   end
 
+  @doc """
+    It moves the block left
+  """
   @spec left(t()) :: t()
   def left(%__MODULE__{parts: parts} = block) do
     %{block | parts: Enum.map(parts, &C.left/1)}
   end
 
+  @doc """
+    It moves the block right
+  """
   @spec right(t()) :: t()
   def right(%__MODULE__{parts: parts} = block) do
     %{block | parts: Enum.map(parts, &C.right/1)}
   end
 
+  @doc """
+    It moves the block up
+  """
   @spec up(t()) :: t()
   def up(%__MODULE__{parts: parts} = block) do
     %{block | parts: Enum.map(parts, &C.up/1)}
   end
 
+  @doc """
+    Creates a new block of type O
+  """
   @spec o(C.t()) :: t()
   def o(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -44,6 +59,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type I
+  """
   @spec i(C.t()) :: t()
   def i(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -52,6 +70,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type T
+  """
   @spec t(C.t()) :: t()
   def t(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -65,6 +86,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type J
+  """
   @spec j(C.t()) :: t()
   def j(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -78,6 +102,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type L
+  """
   @spec l(C.t()) :: t()
   def l(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -91,6 +118,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type Z
+  """
   @spec z(C.t()) :: t()
   def z(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -104,6 +134,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Creates a new block of type S
+  """
   @spec s(C.t()) :: t()
   def s(top_left \\ {0, 0}) do
     %__MODULE__{
@@ -117,6 +150,9 @@ defmodule FallingBlocks.Block do
     }
   end
 
+  @doc """
+    Counts how many rows a block of a given type will occupy.
+  """
   @spec width(__MODULE__.block_type()) :: integer()
   def width(block_type) do
     __MODULE__
