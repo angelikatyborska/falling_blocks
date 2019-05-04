@@ -201,6 +201,27 @@ defmodule FallingBlocks.BoardTest do
 
       assert board3.falling_block == nil
     end
+
+    test "it clears full rows" do
+      long = Block.long({0, 3})
+      square = Block.square({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [long], falling_block: square}
+      board2 = Board.advance(board)
+
+      assert inspect(board) == ~s"""
+             . . . . . .
+             . . . . . .
+             . . . . * *
+             o o o o * *
+             """
+
+      assert inspect(board2) == ~s"""
+             . . . . . .
+             . . . . . .
+             . . . . . .
+             . . . . * *
+             """
+    end
   end
 
   describe "move" do

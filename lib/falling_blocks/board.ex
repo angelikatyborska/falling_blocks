@@ -1,5 +1,6 @@
 defmodule FallingBlocks.Board do
   alias FallingBlocks.{Block, Coordinates}
+  alias FallingBlocks.Board.Row
 
   @standard_width 10
   @standard_height 20
@@ -91,7 +92,13 @@ defmodule FallingBlocks.Board do
         board
 
       {:collisions, true} ->
-        %{board | falling_block: nil, static_blocks: [board.falling_block | board.static_blocks]}
+        new_board = %{
+          board
+          | falling_block: nil,
+            static_blocks: [board.falling_block | board.static_blocks]
+        }
+
+        remove_rows_that_could_have_been_filled(new_board, board.falling_block)
     end
   end
 
@@ -144,5 +151,17 @@ defmodule FallingBlocks.Board do
     else
       board
     end
+  end
+
+  defp remove_rows_that_could_have_been_filled(board, old_falling_block) do
+    old_falling_block
+    |> Block.rows()
+    |> Enum.reduce(board, fn row, acc ->
+      if Row.full?(acc, row) do
+        Row.remove(acc, row)
+      else
+        acc
+      end
+    end)
   end
 end

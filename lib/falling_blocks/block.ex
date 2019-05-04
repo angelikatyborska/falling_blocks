@@ -61,4 +61,38 @@ defmodule FallingBlocks.Block do
     |> Enum.uniq()
     |> Enum.count()
   end
+
+  @doc """
+    Removes those parts of the block that lie at the given row.
+    Moves down all parts that lie above the given row.
+    Returns nil if the block no longer has any parts.
+  """
+  @spec remove_row(t(), integer()) :: t() | nil
+  def remove_row(block, row) do
+    parts =
+      block.parts
+      |> Enum.filter(fn {_, part_row} -> part_row != row end)
+      |> Enum.map(fn {column, part_row} ->
+        if part_row < row do
+          {column, part_row + 1}
+        else
+          {column, part_row}
+        end
+      end)
+
+    case parts do
+      [] -> nil
+      parts -> %{block | parts: parts}
+    end
+  end
+
+  @doc """
+    Returns a list of rows occupied by this block
+  """
+  @spec rows(t()) :: list(integer())
+  def rows(block) do
+    block.parts
+    |> Enum.map(&elem(&1, 1))
+    |> Enum.uniq()
+  end
 end

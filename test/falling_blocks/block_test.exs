@@ -101,4 +101,29 @@ defmodule FallingBlocks.BlockTest do
       assert Block.width(:square) == 2
     end
   end
+
+  describe "remove_row" do
+    test "returns nil if block would no longer have any parts" do
+      long = Block.long({2, 1})
+      assert Block.remove_row(long, 1) == nil
+    end
+
+    test "removes parts of the block that lie on the given row and moves down the ones above it" do
+      square = Block.square({1, 2})
+      square2 = Block.remove_row(square, 3)
+      assert square2.parts |> Enum.count() == 2
+      assert square2.parts |> Enum.find(&(&1 == {1, 3}))
+      assert square2.parts |> Enum.find(&(&1 == {2, 3}))
+    end
+  end
+
+  describe "rows" do
+    test "it returns a list of all rows occupied by this block" do
+      long = Block.long({2, 1})
+      square = Block.square({1, 2})
+
+      assert Block.rows(long) == [1]
+      assert Block.rows(square) == [2, 3]
+    end
+  end
 end
