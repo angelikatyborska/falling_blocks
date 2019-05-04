@@ -18,13 +18,24 @@ defmodule FallingBlocks.Board.InspectTest do
              """
     end
 
-    test "two static os" do
-      os = [
+    test "a T" do
+      block = Block.t({0, 1})
+      board = %Board{height: 3, width: 3, static_blocks: [block]}
+
+      assert inspect(board) == ~s"""
+             . . .
+             . x .
+             x x x
+             """
+    end
+
+    test "two static Os" do
+      blocks = [
         Block.o({0, 4}),
         Block.o({1, 2})
       ]
 
-      board = %Board{height: 6, width: 3, static_blocks: os}
+      board = %Board{height: 6, width: 3, static_blocks: blocks}
 
       assert inspect(board) == ~s"""
              . . .
@@ -36,14 +47,14 @@ defmodule FallingBlocks.Board.InspectTest do
              """
     end
 
-    test "a o and two is" do
-      os = [
+    test "an O and two Is" do
+      blocks = [
         Block.i({0, 4}),
         Block.o({1, 5}),
         Block.i({0, 7})
       ]
 
-      board = %Board{height: 8, width: 4, static_blocks: os}
+      board = %Board{height: 8, width: 4, static_blocks: blocks}
 
       assert inspect(board) == ~s"""
              . . . .
@@ -57,7 +68,7 @@ defmodule FallingBlocks.Board.InspectTest do
              """
     end
 
-    test "a falling i" do
+    test "a falling I" do
       i = Block.i({0, 2})
       board = %Board{height: 8, width: 4, static_blocks: [], falling_block: i}
 

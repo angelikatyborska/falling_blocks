@@ -17,5 +17,6 @@ defimpl Inspect, for: FallingBlocks.Board do
 
   defp block_symbol(:o), do: "*"
   defp block_symbol(:i), do: "o"
-  defp block_symbol(_), do: "."
+  defp block_symbol(:t), do: "x"
+  defp block_symbol(nil), do: "."
 end

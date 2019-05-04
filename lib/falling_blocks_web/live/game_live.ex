@@ -25,6 +25,15 @@ defmodule FallingBlocksWeb.GameLive do
     <%= if @game_state.state == :over do %>
       <div>Game Over</div>
     <% end %>
+
+    <div>
+      TODO:
+      <ul>
+        <li>rotation</li>
+        <li>high score in cookies</li>
+        <li>design (azulejo?)</li>
+      </ul>
+    </div>
     """
   end
 

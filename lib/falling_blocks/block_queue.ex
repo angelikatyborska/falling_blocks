@@ -17,7 +17,7 @@ defmodule FallingBlocks.BlockQueue do
   end
 
   defp generate_new_block() do
-    n = :rand.uniform(2)
+    n = :rand.uniform(Enum.count(Block.block_types()))
     Enum.at(Block.block_types(), n - 1)
   end
 end

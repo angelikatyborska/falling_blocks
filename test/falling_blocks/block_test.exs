@@ -72,7 +72,7 @@ defmodule FallingBlocks.BlockTest do
   end
 
   describe "o" do
-    test "it puts a o" do
+    test "it puts an o" do
       o = Block.o({1, 2})
       assert o.type == :o
       assert o.parts |> Enum.count() == 4
@@ -92,6 +92,18 @@ defmodule FallingBlocks.BlockTest do
       assert i.parts |> Enum.find(&(&1 == {3, 1}))
       assert i.parts |> Enum.find(&(&1 == {4, 1}))
       assert i.parts |> Enum.find(&(&1 == {5, 1}))
+    end
+  end
+
+  describe "t" do
+    test "it puts the block vertically" do
+      t = Block.t({2, 1})
+      assert t.type == :t
+      assert t.parts |> Enum.count() == 4
+      assert t.parts |> Enum.find(&(&1 == {3, 1}))
+      assert t.parts |> Enum.find(&(&1 == {2, 2}))
+      assert t.parts |> Enum.find(&(&1 == {3, 2}))
+      assert t.parts |> Enum.find(&(&1 == {4, 2}))
     end
   end
 
