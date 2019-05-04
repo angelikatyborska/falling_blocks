@@ -24,29 +24,29 @@
 }
 
 .block-part--o {
-  background-color: #8b91dd;
+  background-color: yellow;
 }
 
 .block-part--i {
-  background-color: #efb26b;
+  background-color: red;
 }
 
 .block-part--t {
-  background-color: #7a5ba3;
+  background-color: cyan;
 }
 
 .block-part--j {
-  background-color: #71c4aa;
+  background-color: blue;
 }
 
 .block-part--l {
-  background-color: #72b9db;
+  background-color: orange;
 }
 
 .block-part--z {
-  background-color: #e084c4;
+  background-color: green;
 }
 
 .block-part--s {
-  background-color: #e09084;
+  background-color: magenta;
 }
