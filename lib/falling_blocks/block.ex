@@ -3,12 +3,12 @@ defmodule FallingBlocks.Block do
 
   defstruct parts: [], type: nil
 
-  @type block_type :: :o | :i | :t
+  @type block_type :: :o | :i | :t | :j | :l
   @type t :: %__MODULE__{parts: list(C.t()), type: block_type()}
 
   @spec block_types() :: list(block_type())
   def block_types() do
-    [:o, :i, :t]
+    [:o, :i, :t, :j, :l]
   end
 
   @spec advance(t()) :: t()
@@ -62,6 +62,32 @@ defmodule FallingBlocks.Block do
         top_left |> C.right(2) |> C.down(1)
       ],
       type: :t
+    }
+  end
+
+  @spec j(C.t()) :: t()
+  def j(top_left \\ {0, 0}) do
+    %__MODULE__{
+      parts: [
+        top_left |> C.right(1),
+        top_left |> C.right(1) |> C.down(1),
+        top_left |> C.right(1) |> C.down(2),
+        top_left |> C.down(2)
+      ],
+      type: :j
+    }
+  end
+
+  @spec l(C.t()) :: t()
+  def l(top_left \\ {0, 0}) do
+    %__MODULE__{
+      parts: [
+        top_left,
+        top_left |> C.down(1),
+        top_left |> C.down(2),
+        top_left |> C.right(1) |> C.down(2)
+      ],
+      type: :l
     }
   end
 
