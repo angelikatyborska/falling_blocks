@@ -123,6 +123,26 @@ defmodule FallingBlocks.Board do
     end
   end
 
+  @doc """
+    Rotates the current falling block clockwise.
+    Does nothing if a rotation is blocked by static blocks or the board.
+    Does nothing if there is no falling block.
+  """
+  @spec rotate(__MODULE__.t()) :: __MODULE__.t()
+  def rotate(board) do
+    with %Block{} <- board.falling_block,
+         new_board <- %{board | falling_block: Block.rotate(board.falling_block)},
+         {:collisions, false} <- {:collisions, collisions?(new_board)} do
+      new_board
+    else
+      nil ->
+        board
+
+      {:collisions, true} ->
+        board
+    end
+  end
+
   defp block_at?(nil, _), do: false
 
   defp block_at?(block, {x, y}) do

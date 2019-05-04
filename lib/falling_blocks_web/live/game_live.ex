@@ -84,6 +84,12 @@ defmodule FallingBlocksWeb.GameLive do
   end
 
   @impl true
+  def handle_event("move", "ArrowUp", socket) do
+    :ok = Game.rotate(socket.assigns.game)
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event("move", _, socket) do
     {:noreply, socket}
   end

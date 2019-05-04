@@ -34,9 +34,9 @@ defmodule FallingBlocks.Board.InspectTest do
       board = %Board{height: 3, width: 3, static_blocks: [block]}
 
       assert inspect(board) == ~s"""
-             . j .
-             . j .
-             j j .
+             j . .
+             j j j
+             . . .
              """
     end
 
@@ -45,9 +45,9 @@ defmodule FallingBlocks.Board.InspectTest do
       board = %Board{height: 3, width: 3, static_blocks: [block]}
 
       assert inspect(board) == ~s"""
-             l . .
-             l . .
-             l l .
+             . . l
+             l l l
+             . . .
              """
     end
 

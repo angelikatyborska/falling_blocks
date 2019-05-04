@@ -38,6 +38,11 @@ defmodule FallingBlocks.Game do
     GenServer.call(pid, {:move, direction})
   end
 
+  @spec rotate(pid()) :: :ok
+  def rotate(pid) do
+    GenServer.call(pid, :rotate)
+  end
+
   @spec advance(pid()) :: :ok
   def advance(pid) do
     GenServer.call(pid, :advance)
@@ -83,6 +88,18 @@ defmodule FallingBlocks.Game do
   def handle_call({:move, direction}, _from, game) do
     if game.state == :running do
       new_board = Board.move(game.board, direction)
+
+      send(self(), :inform_subscriber)
+      {:reply, :ok, %{game | board: new_board}}
+    else
+      {:reply, :ok, game}
+    end
+  end
+
+  @impl true
+  def handle_call(:rotate, _from, game) do
+    if game.state == :running do
+      new_board = Board.rotate(game.board)
 
       send(self(), :inform_subscriber)
       {:reply, :ok, %{game | board: new_board}}

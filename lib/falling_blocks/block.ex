@@ -95,10 +95,10 @@ defmodule FallingBlocks.Block do
   def j(top_left \\ {0, 0}) do
     %__MODULE__{
       parts: [
-        top_left |> C.right(1),
-        top_left |> C.right(1) |> C.down(1),
-        top_left |> C.right(1) |> C.down(2),
-        top_left |> C.down(2)
+        top_left,
+        top_left |> C.down(1),
+        top_left |> C.down(1) |> C.right(1),
+        top_left |> C.down(1) |> C.right(2)
       ],
       type: :j
     }
@@ -111,10 +111,10 @@ defmodule FallingBlocks.Block do
   def l(top_left \\ {0, 0}) do
     %__MODULE__{
       parts: [
-        top_left,
+        top_left |> C.right(2),
         top_left |> C.down(1),
-        top_left |> C.down(2),
-        top_left |> C.right(1) |> C.down(2)
+        top_left |> C.down(1) |> C.right(1),
+        top_left |> C.down(1) |> C.right(2)
       ],
       type: :l
     }
@@ -227,12 +227,8 @@ defmodule FallingBlocks.Block do
     Rotates a block.
   """
   @spec rotate(t()) :: t()
-  def rotate(%__MODULE__{type: :i} = block) do
-    %{block | rotation: new_rotation(block)}
-  end
-
   def rotate(%__MODULE__{type: :o} = block) do
-    %{block | rotation: new_rotation(block)}
+    block
   end
 
   def rotate(block) do
@@ -255,28 +251,40 @@ defmodule FallingBlocks.Block do
     width = width(block)
     height = height(block)
 
-    dx =
-      if Integer.is_odd(width) do
-        trunc(width / 2)
-      else
+    {dx, dy} =
+      if block.type == :i do
         case block.rotation do
-          0 -> trunc(width / 2)
-          1 -> trunc((width - 1) / 2)
-          2 -> trunc((width - 1) / 2)
-          3 -> trunc(width / 2)
+          0 -> {(width - 1) / 2, height / 2}
+          1 -> {-1 * width / 2, (height - 1) / 2}
+          2 -> {(width - 1) / 2, -1 * height / 2}
+          3 -> {width / 2, (height - 1) / 2}
         end
-      end
+      else
+        dx =
+          if Integer.is_odd(width) do
+            trunc(width / 2)
+          else
+            case block.rotation do
+              0 -> trunc(width / 2)
+              1 -> trunc((width - 1) / 2)
+              2 -> trunc((width - 1) / 2)
+              3 -> trunc(width / 2)
+            end
+          end
 
-    dy =
-      if Integer.is_odd(height) do
-        trunc(height / 2)
-      else
-        case block.rotation do
-          0 -> trunc(height / 2)
-          1 -> trunc((height - 1) / 2)
-          2 -> trunc((height - 1) / 2)
-          3 -> trunc(height / 2)
-        end
+        dy =
+          if Integer.is_odd(height) do
+            trunc(height / 2)
+          else
+            case block.rotation do
+              0 -> trunc(height / 2)
+              1 -> trunc((height - 1) / 2)
+              2 -> trunc((height - 1) / 2)
+              3 -> trunc(height / 2)
+            end
+          end
+
+        {dx, dy}
       end
 
     block
@@ -288,12 +296,12 @@ defmodule FallingBlocks.Block do
   defp top_left(block) do
     top =
       block.parts
-      |> Enum.map(& elem(&1, 1))
+      |> Enum.map(&elem(&1, 1))
       |> Enum.min()
 
     left =
       block.parts
-      |> Enum.map(& elem(&1, 0))
+      |> Enum.map(&elem(&1, 0))
       |> Enum.min()
 
     {left, top}

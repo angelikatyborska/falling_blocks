@@ -153,6 +153,91 @@ defmodule FallingBlocks.BlockTest do
   end
 
   describe "rotate" do
+    test "O" do
+      board = %Board{height: 5, width: 5, static_blocks: [], falling_block: nil}
+
+      o = Block.o({1, 1})
+      assert o.rotation == 0
+
+      assert inspect(%{board | falling_block: o}) == ~s"""
+             . . . . .
+             . o o . .
+             . o o . .
+             . . . . .
+             . . . . .
+             """
+
+      o2 = Block.rotate(o)
+      assert o2.rotation == 0
+
+      assert inspect(%{board | falling_block: o2}) == ~s"""
+             . . . . .
+             . o o . .
+             . o o . .
+             . . . . .
+             . . . . .
+             """
+    end
+
+    test "I" do
+      board = %Board{height: 5, width: 5, static_blocks: [], falling_block: nil}
+
+      i = Block.i({1, 1})
+      assert i.rotation == 0
+
+      assert inspect(%{board | falling_block: i}) == ~s"""
+             . . . . .
+             . i i i i
+             . . . . .
+             . . . . .
+             . . . . .
+             """
+
+      i2 = Block.rotate(i)
+      assert i2.rotation == 1
+
+      assert inspect(%{board | falling_block: i2}) == ~s"""
+             . . . i .
+             . . . i .
+             . . . i .
+             . . . i .
+             . . . . .
+             """
+
+      i3 = Block.rotate(i2)
+      assert i3.rotation == 2
+
+      assert inspect(%{board | falling_block: i3}) == ~s"""
+             . . . . .
+             . . . . .
+             . i i i i
+             . . . . .
+             . . . . .
+             """
+
+      i4 = Block.rotate(i3)
+      assert i4.rotation == 3
+
+      assert inspect(%{board | falling_block: i4}) == ~s"""
+             . . i . .
+             . . i . .
+             . . i . .
+             . . i . .
+             . . . . .
+             """
+
+      i5 = Block.rotate(i4)
+      assert i5.rotation == 0
+
+      assert inspect(%{board | falling_block: i5}) == ~s"""
+             . . . . .
+             . i i i i
+             . . . . .
+             . . . . .
+             . . . . .
+             """
+    end
+
     test "T" do
       board = %Board{height: 5, width: 5, static_blocks: [], falling_block: nil}
 
@@ -325,6 +410,124 @@ defmodule FallingBlocks.BlockTest do
              . . . . .
              . z z . .
              . . z z .
+             . . . . .
+             . . . . .
+             """
+    end
+
+    test "J" do
+      board = %Board{height: 5, width: 5, static_blocks: [], falling_block: nil}
+
+      j = Block.j({1, 1})
+      assert j.rotation == 0
+
+      assert inspect(%{board | falling_block: j}) == ~s"""
+             . . . . .
+             . j . . .
+             . j j j .
+             . . . . .
+             . . . . .
+             """
+
+      j2 = Block.rotate(j)
+      assert j2.rotation == 1
+
+      assert inspect(%{board | falling_block: j2}) == ~s"""
+             . . . . .
+             . . j j .
+             . . j . .
+             . . j . .
+             . . . . .
+             """
+
+      j3 = Block.rotate(j2)
+      assert j3.rotation == 2
+
+      assert inspect(%{board | falling_block: j3}) == ~s"""
+             . . . . .
+             . . . . .
+             . j j j .
+             . . . j .
+             . . . . .
+             """
+
+      j4 = Block.rotate(j3)
+      assert j4.rotation == 3
+
+      assert inspect(%{board | falling_block: j4}) == ~s"""
+             . . . . .
+             . . j . .
+             . . j . .
+             . j j . .
+             . . . . .
+             """
+
+      j5 = Block.rotate(j4)
+      assert j5.rotation == 0
+
+      assert inspect(%{board | falling_block: j5}) == ~s"""
+             . . . . .
+             . j . . .
+             . j j j .
+             . . . . .
+             . . . . .
+             """
+    end
+
+    test "L" do
+      board = %Board{height: 5, width: 5, static_blocks: [], falling_block: nil}
+
+      l = Block.l({1, 1})
+      assert l.rotation == 0
+
+      assert inspect(%{board | falling_block: l}) == ~s"""
+             . . . . .
+             . . . l .
+             . l l l .
+             . . . . .
+             . . . . .
+             """
+
+      l2 = Block.rotate(l)
+      assert l2.rotation == 1
+
+      assert inspect(%{board | falling_block: l2}) == ~s"""
+             . . . . .
+             . . l . .
+             . . l . .
+             . . l l .
+             . . . . .
+             """
+
+      l3 = Block.rotate(l2)
+      assert l3.rotation == 2
+
+      assert inspect(%{board | falling_block: l3}) == ~s"""
+             . . . . .
+             . . . . .
+             . l l l .
+             . l . . .
+             . . . . .
+             """
+
+      l4 = Block.rotate(l3)
+      assert l4.rotation == 3
+
+      assert inspect(%{board | falling_block: l4}) == ~s"""
+             . . . . .
+             . l l . .
+             . . l . .
+             . . l . .
+             . . . . .
+             """
+
+      l5 = Block.rotate(l4)
+      assert l5.rotation == 0
+
+      assert inspect(%{board | falling_block: l5}) == ~s"""
+             . . . . .
+             . . . l .
+             . l l l .
              . . . . .
              . . . . .
              """
