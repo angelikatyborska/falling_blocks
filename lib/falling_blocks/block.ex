@@ -3,12 +3,12 @@ defmodule FallingBlocks.Block do
 
   defstruct parts: [], type: nil
 
-  @type block_type :: :square | :long
+  @type block_type :: :o | :i
   @type t :: %__MODULE__{parts: list(C.t()), type: block_type()}
 
   @spec block_types() :: list(block_type())
   def block_types() do
-    [:square, :long]
+    [:o, :i]
   end
 
   @spec advance(t()) :: t()
@@ -31,8 +31,8 @@ defmodule FallingBlocks.Block do
     %{block | parts: Enum.map(parts, &C.up/1)}
   end
 
-  @spec square(C.t()) :: t()
-  def square(top_left \\ {0, 0}) do
+  @spec o(C.t()) :: t()
+  def o(top_left \\ {0, 0}) do
     %__MODULE__{
       parts: [
         top_left,
@@ -40,15 +40,15 @@ defmodule FallingBlocks.Block do
         top_left |> C.down() |> C.right(),
         top_left |> C.right()
       ],
-      type: :square
+      type: :o
     }
   end
 
-  @spec long(C.t()) :: t()
-  def long(top_left \\ {0, 0}) do
+  @spec i(C.t()) :: t()
+  def i(top_left \\ {0, 0}) do
     %__MODULE__{
       parts: [top_left, top_left |> C.right(1), top_left |> C.right(2), top_left |> C.right(3)],
-      type: :long
+      type: :i
     }
   end
 

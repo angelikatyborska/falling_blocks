@@ -23,10 +23,10 @@
   border-left: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.block-part--square {
+.block-part--o {
   background-color: #f25d2b;
 }
 
-.block-part--long {
+.block-part--i {
   background-color: #f4e109;
 }

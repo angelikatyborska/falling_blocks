@@ -6,9 +6,9 @@ defmodule FallingBlocks.Board.RowTest do
 
   describe "full?" do
     test "it checks if given row is full with static blocks" do
-      long = Block.long({0, 3})
-      square = Block.square({4, 2})
-      board = %Board{width: 6, height: 4, static_blocks: [long, square]}
+      i = Block.i({0, 3})
+      o = Block.o({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [i, o]}
 
       assert inspect(board) == ~s"""
              . . . . . .
@@ -24,9 +24,9 @@ defmodule FallingBlocks.Board.RowTest do
     end
 
     test "it ignores the falling block" do
-      long = Block.long({0, 3})
-      square = Block.square({4, 2})
-      board = %Board{width: 6, height: 4, static_blocks: [long], falling_block: square}
+      i = Block.i({0, 3})
+      o = Block.o({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [i], falling_block: o}
 
       assert inspect(board) == ~s"""
              . . . . . .
@@ -42,15 +42,15 @@ defmodule FallingBlocks.Board.RowTest do
     end
 
     test "it doesn't have to be the lowest row" do
-      square_bottom_left = Block.square({0, 2})
-      square_bottom_right = Block.square({4, 2})
-      square_top_right = Block.square({4, 0})
-      long = Block.long({0, 1})
+      o_bottom_left = Block.o({0, 2})
+      o_bottom_right = Block.o({4, 2})
+      o_top_right = Block.o({4, 0})
+      i = Block.i({0, 1})
 
       board = %Board{
         width: 6,
         height: 4,
-        static_blocks: [square_bottom_left, square_bottom_right, square_top_right, long]
+        static_blocks: [o_bottom_left, o_bottom_right, o_top_right, i]
       }
 
       assert inspect(board) == ~s"""
@@ -69,9 +69,9 @@ defmodule FallingBlocks.Board.RowTest do
 
   describe "remove" do
     test "it removes the row and moves the ones above down" do
-      long = Block.long({0, 3})
-      square = Block.square({4, 2})
-      board = %Board{width: 6, height: 4, static_blocks: [long, square]}
+      i = Block.i({0, 3})
+      o = Block.o({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [i, o]}
       board2 = Row.remove(board, 3)
 
       assert inspect(board) == ~s"""
@@ -90,19 +90,19 @@ defmodule FallingBlocks.Board.RowTest do
     end
 
     test "it removes blocks that have no more parts" do
-      long = Block.long({0, 3})
-      square = Block.square({4, 2})
-      board = %Board{width: 6, height: 4, static_blocks: [long, square]}
+      i = Block.i({0, 3})
+      o = Block.o({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [i, o]}
       board2 = Row.remove(board, 3)
 
       assert board2.static_blocks |> Enum.count() == 1
-      assert (board2.static_blocks |> Enum.at(0)).type == :square
+      assert (board2.static_blocks |> Enum.at(0)).type == :o
     end
 
     test "does nothing if the row is empty" do
-      long = Block.long({0, 3})
-      square = Block.square({4, 2})
-      board = %Board{width: 6, height: 4, static_blocks: [long, square]}
+      i = Block.i({0, 3})
+      o = Block.o({4, 2})
+      board = %Board{width: 6, height: 4, static_blocks: [i, o]}
       board2 = Row.remove(board, 1)
 
       assert inspect(board) == ~s"""
@@ -121,15 +121,15 @@ defmodule FallingBlocks.Board.RowTest do
     end
 
     test "it doesn't have to be the lowest row" do
-      square_bottom_left = Block.square({0, 2})
-      square_bottom_right = Block.square({4, 2})
-      square_top_right = Block.square({4, 0})
-      long = Block.long({0, 1})
+      o_bottom_left = Block.o({0, 2})
+      o_bottom_right = Block.o({4, 2})
+      o_top_right = Block.o({4, 0})
+      i = Block.i({0, 1})
 
       board = %Board{
         width: 6,
         height: 4,
-        static_blocks: [square_bottom_left, square_bottom_right, square_top_right, long]
+        static_blocks: [o_bottom_left, o_bottom_right, o_top_right, i]
       }
 
       board2 = Row.remove(board, 2)

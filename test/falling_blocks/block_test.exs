@@ -5,125 +5,125 @@ defmodule FallingBlocks.BlockTest do
 
   describe "advance" do
     test "it moves a block down" do
-      square = Block.square({1, 2})
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+      o = Block.o({1, 2})
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
 
-      square = Block.advance(square)
+      o = Block.advance(o)
 
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {1, 4}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 4}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {1, 4}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 4}))
     end
   end
 
   describe "left" do
     test "it moves a block left" do
-      square = Block.square({1, 2})
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+      o = Block.o({1, 2})
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
 
-      square = Block.left(square)
+      o = Block.left(o)
 
-      assert square.parts |> Enum.find(&(&1 == {0, 2}))
-      assert square.parts |> Enum.find(&(&1 == {0, 3}))
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {0, 2}))
+      assert o.parts |> Enum.find(&(&1 == {0, 3}))
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
     end
   end
 
   describe "right" do
     test "it moves a block right" do
-      square = Block.square({1, 2})
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+      o = Block.o({1, 2})
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
 
-      square = Block.right(square)
+      o = Block.right(o)
 
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
-      assert square.parts |> Enum.find(&(&1 == {3, 2}))
-      assert square.parts |> Enum.find(&(&1 == {3, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
+      assert o.parts |> Enum.find(&(&1 == {3, 2}))
+      assert o.parts |> Enum.find(&(&1 == {3, 3}))
     end
   end
 
   describe "up" do
     test "it moves a block up" do
-      square = Block.square({1, 2})
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+      o = Block.o({1, 2})
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
 
-      square = Block.up(square)
+      o = Block.up(o)
 
-      assert square.parts |> Enum.find(&(&1 == {1, 1}))
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 1}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 1}))
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 1}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
     end
   end
 
-  describe "square" do
-    test "it puts a square" do
-      square = Block.square({1, 2})
-      assert square.type == :square
-      assert square.parts |> Enum.count() == 4
-      assert square.parts |> Enum.find(&(&1 == {1, 2}))
-      assert square.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square.parts |> Enum.find(&(&1 == {2, 2}))
-      assert square.parts |> Enum.find(&(&1 == {2, 3}))
+  describe "o" do
+    test "it puts a o" do
+      o = Block.o({1, 2})
+      assert o.type == :o
+      assert o.parts |> Enum.count() == 4
+      assert o.parts |> Enum.find(&(&1 == {1, 2}))
+      assert o.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o.parts |> Enum.find(&(&1 == {2, 2}))
+      assert o.parts |> Enum.find(&(&1 == {2, 3}))
     end
   end
 
-  describe "long" do
+  describe "i" do
     test "it puts the block horizontally" do
-      long = Block.long({2, 1})
-      assert long.type == :long
-      assert long.parts |> Enum.count() == 4
-      assert long.parts |> Enum.find(&(&1 == {2, 1}))
-      assert long.parts |> Enum.find(&(&1 == {3, 1}))
-      assert long.parts |> Enum.find(&(&1 == {4, 1}))
-      assert long.parts |> Enum.find(&(&1 == {5, 1}))
+      i = Block.i({2, 1})
+      assert i.type == :i
+      assert i.parts |> Enum.count() == 4
+      assert i.parts |> Enum.find(&(&1 == {2, 1}))
+      assert i.parts |> Enum.find(&(&1 == {3, 1}))
+      assert i.parts |> Enum.find(&(&1 == {4, 1}))
+      assert i.parts |> Enum.find(&(&1 == {5, 1}))
     end
   end
 
   describe "width" do
     test "it counts the width" do
-      assert Block.width(:long) == 4
-      assert Block.width(:square) == 2
+      assert Block.width(:i) == 4
+      assert Block.width(:o) == 2
     end
   end
 
   describe "remove_row" do
     test "returns nil if block would no longer have any parts" do
-      long = Block.long({2, 1})
-      assert Block.remove_row(long, 1) == nil
+      i = Block.i({2, 1})
+      assert Block.remove_row(i, 1) == nil
     end
 
     test "removes parts of the block that lie on the given row and moves down the ones above it" do
-      square = Block.square({1, 2})
-      square2 = Block.remove_row(square, 3)
-      assert square2.parts |> Enum.count() == 2
-      assert square2.parts |> Enum.find(&(&1 == {1, 3}))
-      assert square2.parts |> Enum.find(&(&1 == {2, 3}))
+      o = Block.o({1, 2})
+      o2 = Block.remove_row(o, 3)
+      assert o2.parts |> Enum.count() == 2
+      assert o2.parts |> Enum.find(&(&1 == {1, 3}))
+      assert o2.parts |> Enum.find(&(&1 == {2, 3}))
     end
   end
 
   describe "rows" do
     test "it returns a list of all rows occupied by this block" do
-      long = Block.long({2, 1})
-      square = Block.square({1, 2})
+      i = Block.i({2, 1})
+      o = Block.o({1, 2})
 
-      assert Block.rows(long) == [1]
-      assert Block.rows(square) == [2, 3]
+      assert Block.rows(i) == [1]
+      assert Block.rows(o) == [2, 3]
     end
   end
 end
