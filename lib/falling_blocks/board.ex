@@ -80,16 +80,17 @@ defmodule FallingBlocks.Board do
     Advances the current falling block one step down.
     If the falling block has landed, moves it to static blocks and clears the current falling block.
     If there is no falling block, does nothing.
+    Returns the new board and the number of cleared rows.
   """
-  @spec advance(__MODULE__.t()) :: __MODULE__.t()
+  @spec advance(__MODULE__.t()) :: {__MODULE__.t(), integer()}
   def advance(board) do
     with %Block{} <- board.falling_block,
          new_board <- %{board | falling_block: Block.advance(board.falling_block)},
          {:collisions, false} <- {:collisions, collisions?(new_board)} do
-      new_board
+      {new_board, 0}
     else
       nil ->
-        board
+        {board, 0}
 
       {:collisions, true} ->
         new_board = %{
@@ -156,9 +157,9 @@ defmodule FallingBlocks.Board do
   defp remove_rows_that_could_have_been_filled(board, old_falling_block) do
     old_falling_block
     |> Block.rows()
-    |> Enum.reduce(board, fn row, acc ->
-      if Row.full?(acc, row) do
-        Row.remove(acc, row)
+    |> Enum.reduce({board, 0}, fn row, {acc_board, acc_lines} = acc ->
+      if Row.full?(acc_board, row) do
+        {Row.remove(acc_board, row), acc_lines + 1}
       else
         acc
       end

@@ -5,14 +5,15 @@ defmodule FallingBlocks.Game do
 
   alias FallingBlocks.{Board, BlockQueue}
 
-  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil
+  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil, lines: 0
 
   @type state :: :new | :running | :over
   @type t() :: %__MODULE__{
           board: Board.t(),
           subscriber: pid(),
           state: state(),
-          block_queue: BlockQueue.t()
+          block_queue: BlockQueue.t(),
+          lines: integer()
         }
   @tick 500
 
@@ -121,8 +122,8 @@ defmodule FallingBlocks.Game do
     if game.state == :running do
       game =
         if game.board.falling_block do
-          new_board = Board.advance(game.board)
-          %{game | board: new_board}
+          {new_board, rows_cleared} = Board.advance(game.board)
+          %{game | board: new_board, lines: game.lines + rows_cleared}
         else
           {block_type, queue} = BlockQueue.pop(game.block_queue)
 

@@ -8,6 +8,7 @@ defmodule FallingBlocksWeb.GameLive do
     ~L"""
     <a phx-click="start">Start</a>
 
+    <div>Lines: <%= @game_state.lines %></div>
     <div>Next: <%= Enum.join(@game_state.block_queue, ", ") %></div>
 
     <div class="board" phx-keydown="move" phx-target="window">
