@@ -18,6 +18,9 @@ defmodule FallingBlocks.Board do
 
   @type direction :: :left | :right
 
+  @doc """
+    Sets the current falling block if there is none.
+  """
   @spec set_falling_block(%__MODULE__{falling_block: nil}, Block.block_type()) ::
           {:ok | :game_over, __MODULE__.t()}
   def set_falling_block(board, block_type) do
@@ -37,12 +40,13 @@ defmodule FallingBlocks.Board do
   end
 
   @doc """
-    Useful for printing the board. `nil` means no block at those coordinates.
+    Returns the block type at given coordinates. `nil` means no block there.
+    Useful for printing the board.
   """
   @spec block_type_at(__MODULE__.t(), Coordinates.t()) :: Block.block_type() | nil
   def block_type_at(board, {x, y}) do
     block =
-      FallingBlocks.Board.find_static_block_at(board, {x, y}) ||
+      FallingBlocks.Board.static_block_at(board, {x, y}) ||
         (FallingBlocks.Board.falling_block_at?(board, {x, y}) && board.falling_block)
 
     if block do
@@ -52,25 +56,30 @@ defmodule FallingBlocks.Board do
     end
   end
 
-  @spec find_static_block_at(__MODULE__.t(), Coordinates.t()) :: Block.t() | nil
-  def find_static_block_at(board, {x, y}) do
+  @doc """
+    Returns a static blocks at given coordinates. `nil` means no static block there.
+    A static block is a block that has already landed.
+  """
+  @spec static_block_at(__MODULE__.t(), Coordinates.t()) :: Block.t() | nil
+  def static_block_at(board, {x, y}) do
     Enum.find(board.static_blocks, fn %{parts: parts} ->
       Enum.any?(parts, fn part -> part == {x, y} end)
     end)
   end
 
-  @spec block_at?(Block.t() | nil, Coordinates.t()) :: boolean
-  def block_at?(nil, _), do: false
-
-  def block_at?(block, {x, y}) do
-    Enum.any?(block.parts, fn part -> part == {x, y} end)
-  end
-
+  @doc """
+    Checks if the falling block is currently at the given coordinates.
+  """
   @spec falling_block_at?(__MODULE__.t(), Coordinates.t()) :: boolean
   def falling_block_at?(board, {x, y}) do
     block_at?(board.falling_block, {x, y})
   end
 
+  @doc """
+    Advances the current falling block one step down.
+    If the falling block has landed, moves it to static blocks and clears the current falling block.
+    If there is no falling block, does nothing.
+  """
   @spec advance(__MODULE__.t()) :: __MODULE__.t()
   def advance(board) do
     with %Block{} <- board.falling_block,
@@ -86,6 +95,11 @@ defmodule FallingBlocks.Board do
     end
   end
 
+  @doc """
+    Moves the current falling block to the left or to the right.
+    Does nothing if a move is blocked by static blocks or the board.
+    Does nothing if there is no falling block.
+  """
   @spec move(__MODULE__.t(), __MODULE__.direction()) :: __MODULE__.t()
   def move(board, direction) do
     with %Block{} <- board.falling_block,
@@ -101,11 +115,17 @@ defmodule FallingBlocks.Board do
     end
   end
 
+  defp block_at?(nil, _), do: false
+
+  defp block_at?(block, {x, y}) do
+    Enum.any?(block.parts, fn part -> part == {x, y} end)
+  end
+
   defp collisions?(board) do
     with %Block{} <- board.falling_block do
       board.falling_block.parts
       |> Enum.any?(fn {x, y} = part ->
-        find_static_block_at(board, part) ||
+        static_block_at(board, part) ||
           y >= board.height ||
           x >= board.width ||
           x < 0
@@ -125,23 +145,4 @@ defmodule FallingBlocks.Board do
       board
     end
   end
-end
-
-defimpl Inspect, for: FallingBlocks.Board do
-  def inspect(%FallingBlocks.Board{} = board, _opts) do
-    0..(board.height - 1)
-    |> Enum.map(fn row ->
-      0..(board.width - 1)
-      |> Enum.map(fn column ->
-        block_symbol(FallingBlocks.Board.block_type_at(board, {column, row}))
-      end)
-      |> Enum.join(" ")
-    end)
-    |> Enum.join("\n")
-    |> Kernel.<>("\n")
-  end
-
-  defp block_symbol(:square), do: "*"
-  defp block_symbol(:long), do: "o"
-  defp block_symbol(_), do: "."
 end

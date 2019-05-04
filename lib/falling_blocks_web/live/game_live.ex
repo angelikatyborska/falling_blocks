@@ -9,9 +9,6 @@ defmodule FallingBlocksWeb.GameLive do
     <a phx-click="start">Start</a>
 
     <div>Next: <%= Enum.join(@game_state.block_queue, ", ") %></div>
-    <%= if @game_state.state == :over do %>
-    <div>Game Over</div>
-    <% end %>
 
     <div class="board" phx-keydown="move" phx-target="window">
       <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
@@ -23,6 +20,10 @@ defmodule FallingBlocksWeb.GameLive do
       </div>
       <% end) %>
     </div>
+
+    <%= if @game_state.state == :over do %>
+      <div>Game Over</div>
+    <% end %>
     """
   end
 
