@@ -24,8 +24,8 @@ defmodule FallingBlocks.Board.InspectTest do
 
       assert inspect(board) == ~s"""
              . . .
-             . x .
-             x x x
+             . t .
+             t t t
              """
     end
 
@@ -40,10 +40,10 @@ defmodule FallingBlocks.Board.InspectTest do
       assert inspect(board) == ~s"""
              . . .
              . . .
-             . * *
-             . * *
-             * * .
-             * * .
+             . o o
+             . o o
+             o o .
+             o o .
              """
     end
 
@@ -61,10 +61,10 @@ defmodule FallingBlocks.Board.InspectTest do
              . . . .
              . . . .
              . . . .
-             o o o o
-             . * * .
-             . * * .
-             o o o o
+             i i i i
+             . o o .
+             . o o .
+             i i i i
              """
     end
 
@@ -75,7 +75,7 @@ defmodule FallingBlocks.Board.InspectTest do
       assert inspect(board) == ~s"""
              . . . .
              . . . .
-             o o o o
+             i i i i
              . . . .
              . . . .
              . . . .

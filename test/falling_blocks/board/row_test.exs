@@ -13,8 +13,8 @@ defmodule FallingBlocks.Board.RowTest do
       assert inspect(board) == ~s"""
              . . . . . .
              . . . . . .
-             . . . . * *
-             o o o o * *
+             . . . . o o
+             i i i i o o
              """
 
       assert Row.full?(board, 0) == false
@@ -31,8 +31,8 @@ defmodule FallingBlocks.Board.RowTest do
       assert inspect(board) == ~s"""
              . . . . . .
              . . . . . .
-             . . . . * *
-             o o o o * *
+             . . . . o o
+             i i i i o o
              """
 
       assert Row.full?(board, 0) == false
@@ -54,10 +54,10 @@ defmodule FallingBlocks.Board.RowTest do
       }
 
       assert inspect(board) == ~s"""
-             . . . . * *
-             o o o o * *
-             * * . . * *
-             * * . . * *
+             . . . . o o
+             i i i i o o
+             o o . . o o
+             o o . . o o
              """
 
       assert Row.full?(board, 0) == false
@@ -77,15 +77,15 @@ defmodule FallingBlocks.Board.RowTest do
       assert inspect(board) == ~s"""
              . . . . . .
              . . . . . .
-             . . . . * *
-             o o o o * *
+             . . . . o o
+             i i i i o o
              """
 
       assert inspect(board2) == ~s"""
              . . . . . .
              . . . . . .
              . . . . . .
-             . . . . * *
+             . . . . o o
              """
     end
 
@@ -108,15 +108,15 @@ defmodule FallingBlocks.Board.RowTest do
       assert inspect(board) == ~s"""
              . . . . . .
              . . . . . .
-             . . . . * *
-             o o o o * *
+             . . . . o o
+             i i i i o o
              """
 
       assert inspect(board2) == ~s"""
              . . . . . .
              . . . . . .
-             . . . . * *
-             o o o o * *
+             . . . . o o
+             i i i i o o
              """
     end
 
@@ -135,17 +135,17 @@ defmodule FallingBlocks.Board.RowTest do
       board2 = Row.remove(board, 2)
 
       assert inspect(board) == ~s"""
-             . . . . * *
-             o o o o * *
-             * * . . * *
-             * * . . * *
+             . . . . o o
+             i i i i o o
+             o o . . o o
+             o o . . o o
              """
 
       assert inspect(board2) == ~s"""
              . . . . . .
-             . . . . * *
-             o o o o * *
-             * * . . * *
+             . . . . o o
+             i i i i o o
+             o o . . o o
              """
     end
   end

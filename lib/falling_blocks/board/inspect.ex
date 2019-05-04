@@ -15,8 +15,8 @@ defimpl Inspect, for: FallingBlocks.Board do
     |> Kernel.<>("\n")
   end
 
-  defp block_symbol(:o), do: "*"
-  defp block_symbol(:i), do: "o"
-  defp block_symbol(:t), do: "x"
+  defp block_symbol(:o), do: "o"
+  defp block_symbol(:i), do: "i"
+  defp block_symbol(:t), do: "t"
   defp block_symbol(nil), do: "."
 end

@@ -13,14 +13,14 @@ defmodule FallingBlocks.BoardTest do
 
       assert inspect(board) == ~s"""
              . . . . . .
-             . * * . . .
-             . * * . . .
+             . o o . . .
+             . o o . . .
              """
 
       assert inspect(board2) == ~s"""
-             . . * * . .
-             . * * . . .
-             . * * . . .
+             . . o o . .
+             . o o . . .
+             . o o . . .
              """
     end
 
@@ -32,14 +32,14 @@ defmodule FallingBlocks.BoardTest do
       {:ok, new_even_board} = Board.set_falling_block(even_board, :o)
 
       assert inspect(new_odd_board) == ~s"""
-             . * * . .
-             . * * . .
+             . o o . .
+             . o o . .
              . . . . .
              """
 
       assert inspect(new_even_board) == ~s"""
-             . . * * . .
-             . . * * . .
+             . . o o . .
+             . . o o . .
              . . . . . .
              """
     end
@@ -52,13 +52,13 @@ defmodule FallingBlocks.BoardTest do
       {:ok, new_even_board} = Board.set_falling_block(even_board, :i)
 
       assert inspect(new_odd_board) == ~s"""
-             o o o o .
+             i i i i .
              . . . . .
              . . . . .
              """
 
       assert inspect(new_even_board) == ~s"""
-             . o o o o .
+             . i i i i .
              . . . . . .
              . . . . . .
              """
@@ -105,7 +105,7 @@ defmodule FallingBlocks.BoardTest do
       {board3, _} = Board.advance(board2)
 
       assert inspect(board) == ~s"""
-             o o o o
+             i i i i
              . . . .
              . . . .
              . . . .
@@ -114,7 +114,7 @@ defmodule FallingBlocks.BoardTest do
 
       assert inspect(board2) == ~s"""
              . . . .
-             o o o o
+             i i i i
              . . . .
              . . . .
              . . . .
@@ -123,7 +123,7 @@ defmodule FallingBlocks.BoardTest do
       assert inspect(board3) == ~s"""
              . . . .
              . . . .
-             o o o o
+             i i i i
              . . . .
              . . . .
              """
@@ -140,28 +140,28 @@ defmodule FallingBlocks.BoardTest do
       assert inspect(board) == ~s"""
              . . . .
              . . . .
-             * * . .
-             * * . .
+             o o . .
+             o o . .
              . . . .
-             o o o o
+             i i i i
              """
 
       assert inspect(board2) == ~s"""
              . . . .
              . . . .
              . . . .
-             * * . .
-             * * . .
-             o o o o
+             o o . .
+             o o . .
+             i i i i
              """
 
       assert inspect(board3) == ~s"""
              . . . .
              . . . .
              . . . .
-             * * . .
-             * * . .
-             o o o o
+             o o . .
+             o o . .
+             i i i i
              """
     end
 
@@ -176,8 +176,8 @@ defmodule FallingBlocks.BoardTest do
              . . . .
              . . . .
              . . . .
-             * * . .
-             * * . .
+             o o . .
+             o o . .
              . . . .
              """
 
@@ -186,8 +186,8 @@ defmodule FallingBlocks.BoardTest do
              . . . .
              . . . .
              . . . .
-             * * . .
-             * * . .
+             o o . .
+             o o . .
              """
 
       assert inspect(board3) == ~s"""
@@ -195,8 +195,8 @@ defmodule FallingBlocks.BoardTest do
              . . . .
              . . . .
              . . . .
-             * * . .
-             * * . .
+             o o . .
+             o o . .
              """
 
       assert board3.falling_block == nil
@@ -221,16 +221,16 @@ defmodule FallingBlocks.BoardTest do
 
       assert inspect(board) == ~s"""
              . . . . . .
-             o o o o . .
-             o o o o * *
-             o o o o * *
+             i i i i . .
+             i i i i o o
+             i i i i o o
              """
 
       assert inspect(board2) == ~s"""
              . . . . . .
              . . . . . .
              . . . . . .
-             o o o o . .
+             i i i i . .
              """
     end
   end
@@ -253,20 +253,20 @@ defmodule FallingBlocks.BoardTest do
       board3 = Board.move(board2, :left)
 
       assert inspect(board) == ~s"""
-             . . * * . .
-             . . * * . .
+             . . o o . .
+             . . o o . .
              . . . . . .
              """
 
       assert inspect(board2) == ~s"""
-             . * * . . .
-             . * * . . .
+             . o o . . .
+             . o o . . .
              . . . . . .
              """
 
       assert inspect(board3) == ~s"""
-             * * . . . .
-             * * . . . .
+             o o . . . .
+             o o . . . .
              . . . . . .
              """
     end
@@ -279,20 +279,20 @@ defmodule FallingBlocks.BoardTest do
       board3 = Board.move(board2, :right)
 
       assert inspect(board) == ~s"""
-             . . * * . .
-             . . * * . .
+             . . o o . .
+             . . o o . .
              . . . . . .
              """
 
       assert inspect(board2) == ~s"""
-             . . . * * .
-             . . . * * .
+             . . . o o .
+             . . . o o .
              . . . . . .
              """
 
       assert inspect(board3) == ~s"""
-             . . . . * *
-             . . . . * *
+             . . . . o o
+             . . . . o o
              . . . . . .
              """
     end
@@ -307,8 +307,8 @@ defmodule FallingBlocks.BoardTest do
       board5 = Board.move(board4, :left)
 
       result = ~s"""
-      * *
-      * *
+      o o
+      o o
       . .
       """
 
@@ -337,9 +337,9 @@ defmodule FallingBlocks.BoardTest do
       board5 = Board.move(board4, :left)
 
       result = ~s"""
-      . . * * . .
-      * * * * * *
-      * * . . * *
+      . . o o . .
+      o o o o o o
+      o o . . o o
       """
 
       assert inspect(board) == result
@@ -375,10 +375,10 @@ defmodule FallingBlocks.BoardTest do
       assert inspect(board) == ~s"""
              . . .
              . . .
-             . * *
-             . * *
-             * * .
-             * * .
+             . o o
+             . o o
+             o o .
+             o o .
              """
     end
 
@@ -396,10 +396,10 @@ defmodule FallingBlocks.BoardTest do
              . . . .
              . . . .
              . . . .
-             o o o o
-             . * * .
-             . * * .
-             o o o o
+             i i i i
+             . o o .
+             . o o .
+             i i i i
              """
     end
 
@@ -410,7 +410,7 @@ defmodule FallingBlocks.BoardTest do
       assert inspect(board) == ~s"""
              . . . .
              . . . .
-             o o o o
+             i i i i
              . . . .
              . . . .
              . . . .
