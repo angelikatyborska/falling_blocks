@@ -27,6 +27,10 @@ body {
   border-bottom: 1px solid #d3d3d3;
   border-right: 1px solid #d3d3d3;
   flex: 0 0 auto;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 .board-row:first-child .block-part {
@@ -37,36 +41,36 @@ body {
   border-left: 1px solid #d3d3d3;
 }
 
-.block-part-- {
-  background-color: white;
+.block-part:not(.block-part--nil) {
+  box-shadow: inset 1px 1px 1px rgba(white, 0.5), inset -1px -1px 1px rgba(black, 0.5);
 }
 
 .block-part--o {
-  background-color: yellow;
+  background-image: url('/images/tile2.svg');
 }
 
 .block-part--i {
-  background-color: red;
+  background-image: url('/images/tile3.svg');
 }
 
 .block-part--t {
-  background-color: cyan;
+  background-image: url('/images/tile4.svg');
 }
 
 .block-part--j {
-  background-color: blue;
+  background-image: url('/images/tile5.svg');
 }
 
 .block-part--l {
-  background-color: orange;
+  background-image: url('/images/tile6.svg');
 }
 
 .block-part--z {
-  background-color: green;
+  background-image: url('/images/tile1.svg');
 }
 
 .block-part--s {
-  background-color: magenta;
+  background-image: url('/images/tile7.svg');
 }
 
 .panel h1 {

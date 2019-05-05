@@ -11,7 +11,7 @@
               if block.parts |> Enum.any?(fn part -> part == {column, row} end) do
                 "block-part--#{block_type}"
               else
-                ""
+                "block-part--nil"
               end
           %>
           <div class="block-part <%= class %>"></div>

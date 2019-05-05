@@ -5,18 +5,24 @@ defmodule FallingBlocks.Game do
 
   alias FallingBlocks.{Board, BlockQueue}
 
-  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil, lines: 0, tick_throttle_counter: 0, tick_frequency: 1
+  defstruct board: nil,
+            subscriber: nil,
+            state: :new,
+            block_queue: nil,
+            lines: 0,
+            tick_throttle_counter: 0,
+            tick_frequency: 1
 
   @type state :: :new | :running | :game_over
   @type t() :: %__MODULE__{
-                 board: Board.t(),
-                 subscriber: pid(),
-                 state: state(),
-                 block_queue: BlockQueue.t(),
-                 lines: integer(),
-                 tick_throttle_counter: integer(),
-                 tick_frequency: integer()
-               }
+          board: Board.t(),
+          subscriber: pid(),
+          state: state(),
+          block_queue: BlockQueue.t(),
+          lines: integer(),
+          tick_throttle_counter: integer(),
+          tick_frequency: integer()
+        }
 
   @tick 80
   @default_tick_frequency 8
@@ -154,7 +160,8 @@ defmodule FallingBlocks.Game do
       :timer.send_after(@tick, self(), :tick)
     end
 
-    {:noreply, %{game | tick_throttle_counter: rem(game.tick_throttle_counter + 1, game.tick_frequency)}}
+    {:noreply,
+     %{game | tick_throttle_counter: rem(game.tick_throttle_counter + 1, game.tick_frequency)}}
   end
 
   @impl true

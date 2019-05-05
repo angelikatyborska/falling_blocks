@@ -12,7 +12,7 @@ defmodule FallingBlocksWeb.GameLive do
         <div class="board-row">
           <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
           <% block_type = Board.block_type_at(@game_state.board, {column, row}) %>
-          <div class="block-part block-part--<%= block_type %>"></div>
+          <div class="block-part block-part--<%= block_type || "nil" %>"></div>
           <% end) %>
         </div>
         <% end) %>
@@ -47,7 +47,8 @@ defmodule FallingBlocksWeb.GameLive do
         <li>pause</li>
         <li>gen server tests</li>
         <li>high score in cookies</li>
-        <li>design (azulejo?)</li>
+        <li>finish design</li>
+        <li>rename to Falling Tiles</li>
       </ul>
     </div>
     """

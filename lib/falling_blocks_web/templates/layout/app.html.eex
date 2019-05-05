@@ -19,7 +19,13 @@
     </main>
     <footer>
       <div>Noticed an issue? <a href="https://github.com/angelikatyborska/falling_blocks/issues">Report here.</a></div>
-      <div>Created by <a href="https://angelika.me/">Angelika Tyborska</a>. Powered by <a href="https://github.com/phoenixframework/phoenix_live_view">Phoenix LiveView</a>.</div>
+      <div>
+        Created by <a href="https://angelika.me/">Angelika Tyborska</a>.
+        Powered by <a href="https://github.com/phoenixframework/phoenix_live_view">Phoenix LiveView</a>.
+      </div>
+      <div>
+        The <a href="https://en.wikipedia.org/wiki/Azulejo">Azulejo</a> vector graphics come from <a href="https://www.vecteezy.com/vector-art/116172-portuguese-tile-vector">vecteezy.com</a>.
+      </div>
     </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
