@@ -51,6 +51,7 @@ defmodule FallingBlocks.Game do
   # This is only exposed so that the LiveView can render a new game during the initial HTTP-only connection
   # without starting the game process.
   def new_game() do
+    # TODO: rethink this, the queue is random and due to the double-render it will be recreated
     queue = BlockQueue.new()
     board = %Board{height: 20, width: 10, static_blocks: []}
 

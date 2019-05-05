@@ -1,0 +1,10 @@
+<div class="controls">
+  <div class="label rotate">Rotate</div>
+  <div class="label left">Left</div>
+  <kbd class="key up"><span class="vertical">&uparrow;</span></kbd>
+  <kbd class="key left"><span class="horizontal">&leftarrow;</span></kbd>
+  <kbd class="key down"><span class="vertical">&downarrow;</span></kbd>
+  <kbd class="key right"><span class="horizontal">&rightarrow;</span></kbd>
+  <div class="label right">Right</div>
+  <div class="label down">Start / Down</div>
+</div>

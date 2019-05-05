@@ -6,32 +6,50 @@ defmodule FallingBlocksWeb.GameLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <a phx-click="start">Start</a>
+    <div class="game">
+      <div class="panel panel-left">
+        <div class="panel-box">
+          <div class="panel-box-title">Controls</div>
+          <div class="panel-box-content">
+            <%= FallingBlocksWeb.GameComponentView.render("controls.html") %>
+          </div>
+        </div>
+      </div>
 
-    <div>Lines: <%= @game_state.lines %></div>
-    <div>Next: <%= Enum.join(@game_state.block_queue, ", ") %></div>
-
-    <div class="board" phx-keydown="move" phx-target="window">
-      <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
-      <div class="board-row">
-        <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
-        <% block_type = Board.block_type_at(@game_state.board, {column, row}) %>
-        <div class="block-part block-part--<%= block_type %>"></div>
+      <div class="board" phx-keydown="move" phx-target="window">
+        <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
+        <div class="board-row">
+          <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
+          <% block_type = Board.block_type_at(@game_state.board, {column, row}) %>
+          <div class="block-part block-part--<%= block_type %>"></div>
+          <% end) %>
+        </div>
         <% end) %>
       </div>
-      <% end) %>
-    </div>
 
-    <%= if @game_state.state == :over do %>
-      <div>Game Over</div>
-    <% end %>
+      <div class="panel">
+        <h1>Falling Blocks</h1>
+        <div class="panel-box">
+          <div class="panel-box-title">Next</div>
+          <div class="panel-box-content"><%= Enum.join(@game_state.block_queue, ", ") %></div>
+        </div>
+        <div class="panel-box">
+          <div class="panel-box-title">Lines</div>
+          <div class="panel-box-content"><%= @game_state.lines %></div>
+        </div>
+      </div>
+
+      <%= if @game_state.state == :over do %>
+        <div>Game Over</div>
+      <% end %>
+    </div>
 
     <div>
       TODO:
       <ul>
-        <li>rotation</li>
-        <li>rotation as part of the queue</li>
+        <li>rotation as part of the queue? nah</li>
         <li>restart</li>
+        <li>pause</li>
         <li>high score in cookies</li>
         <li>design (azulejo?)</li>
       </ul>
@@ -52,12 +70,6 @@ defmodule FallingBlocksWeb.GameLive do
       end
 
     {:ok, socket}
-  end
-
-  @impl true
-  def handle_event("start", _, socket) do
-    :ok = Game.start(socket.assigns.game)
-    {:noreply, socket}
   end
 
   @impl true

@@ -1,5 +1,12 @@
-.board {
-  margin: 0 auto;
+body {
+  font-family: "Roboto", "Helvetica", sans-serif;
+}
+
+.game {
+  display: grid;
+  margin: 10px auto;
+  max-width: 800px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .board-row {
@@ -49,4 +56,36 @@
 
 .block-part--s {
   background-color: magenta;
+}
+
+.panel h1 {
+  margin-top: 0;
+}
+
+.panel-left {
+  display: flex;
+  flex-direction: row;
+  align-content: end;
+  align-items: end;
+}
+
+.panel-box {
+  border: 1px solid lightgray;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.panel-box:last-child {
+  margin-bottom: 0;
+}
+
+.panel-box-title {
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 5px;
+  border-bottom: 1px solid lightgray;
+}
+
+.panel-box-content {
+  padding: 10px;
 }
