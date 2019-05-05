@@ -7,7 +7,7 @@ defmodule FallingBlocksWeb.GameLive do
   def render(assigns) do
     ~L"""
     <div class="game">
-      <div class="board" phx-keydown="move" phx-target="window">
+      <div class="board" phx-keydown="keydown" phx-keyup="keyup" phx-target="window">
         <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
         <div class="board-row">
           <%= Enum.map((0..(@game_state.board.width - 1)), fn column -> %>
@@ -36,7 +36,7 @@ defmodule FallingBlocksWeb.GameLive do
         </div>
         <div class="panel-box">
           <div class="panel-box-title">Lines</div>
-          <div class="panel-box-content"><%= @game_state.lines %></div>
+          <div class="panel-box-content lines"><%= @game_state.lines %></div>
         </div>
       </div>
     </div>
@@ -69,25 +69,25 @@ defmodule FallingBlocksWeb.GameLive do
   end
 
   @impl true
-  def handle_event("move", "ArrowLeft", socket) do
+  def handle_event("keydown", "ArrowLeft", socket) do
     :ok = Game.move(socket.assigns.game, :left)
     {:noreply, socket}
   end
 
   @impl true
-  def handle_event("move", "ArrowRight", socket) do
+  def handle_event("keydown", "ArrowRight", socket) do
     :ok = Game.move(socket.assigns.game, :right)
     {:noreply, socket}
   end
 
   @impl true
-  def handle_event("move", "ArrowDown", socket) do
+  def handle_event("keydown", "ArrowDown", socket) do
     case socket.assigns.game_state.state do
       :new ->
         :ok = Game.start(socket.assigns.game)
 
       :running ->
-        :ok = Game.advance(socket.assigns.game)
+        :ok = Game.fast_mode_on(socket.assigns.game)
 
       :game_over ->
         :ok = Game.restart(socket.assigns.game)
@@ -97,13 +97,31 @@ defmodule FallingBlocksWeb.GameLive do
   end
 
   @impl true
-  def handle_event("move", "ArrowUp", socket) do
+  def handle_event("keydown", "ArrowUp", socket) do
     :ok = Game.rotate(socket.assigns.game)
     {:noreply, socket}
   end
 
   @impl true
-  def handle_event("move", _, socket) do
+  def handle_event("keydown", _, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("keyup", "ArrowDown", socket) do
+    case socket.assigns.game_state.state do
+      :running ->
+        :ok = Game.fast_mode_off(socket.assigns.game)
+
+      _ ->
+        :ok
+    end
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("keyup", _, socket) do
     {:noreply, socket}
   end
 

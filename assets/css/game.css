@@ -37,6 +37,10 @@ body {
   border-left: 1px solid #d3d3d3;
 }
 
+.block-part-- {
+  background-color: white;
+}
+
 .block-part--o {
   background-color: yellow;
 }
@@ -95,4 +99,9 @@ body {
 
 .panel-box-content {
   padding: 10px;
+  text-align: center;
+}
+
+.lines {
+  font-size: 1.66em;
 }

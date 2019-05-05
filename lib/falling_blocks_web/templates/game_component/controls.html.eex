@@ -9,7 +9,7 @@
       <kbd class="key down"><span class="vertical">&downarrow;</span></kbd>
       <kbd class="key right"><span class="horizontal">&rightarrow;</span></kbd>
       <div class="label right">Right</div>
-      <div class="label down">Start / Down</div>
+      <div class="label down"><div>Start /</div><div>Faster (hold)</div></div>
     </div>
   </div>
 </div>

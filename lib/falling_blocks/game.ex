@@ -5,17 +5,22 @@ defmodule FallingBlocks.Game do
 
   alias FallingBlocks.{Board, BlockQueue}
 
-  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil, lines: 0
+  defstruct board: nil, subscriber: nil, state: :new, block_queue: nil, lines: 0, tick_throttle_counter: 0, tick_frequency: 1
 
   @type state :: :new | :running | :game_over
   @type t() :: %__MODULE__{
-          board: Board.t(),
-          subscriber: pid(),
-          state: state(),
-          block_queue: BlockQueue.t(),
-          lines: integer()
-        }
-  @tick 500
+                 board: Board.t(),
+                 subscriber: pid(),
+                 state: state(),
+                 block_queue: BlockQueue.t(),
+                 lines: integer(),
+                 tick_throttle_counter: integer(),
+                 tick_frequency: integer()
+               }
+
+  @tick 80
+  @default_tick_frequency 8
+  @fast_tick_frequency 1
 
   # API ######################################################
 
@@ -48,9 +53,14 @@ defmodule FallingBlocks.Game do
     GenServer.call(pid, :rotate)
   end
 
-  @spec advance(pid()) :: :ok
-  def advance(pid) do
-    GenServer.call(pid, :advance)
+  @spec fast_mode_on(pid()) :: :ok
+  def fast_mode_on(pid) do
+    GenServer.call(pid, :fast_mode_on)
+  end
+
+  @spec fast_mode_off(pid()) :: :ok
+  def fast_mode_off(pid) do
+    GenServer.call(pid, :fast_mode_off)
   end
 
   # This is only exposed so that the LiveView can render a new game during the initial HTTP-only connection
@@ -71,7 +81,7 @@ defmodule FallingBlocks.Game do
     if game.state == :new do
       game = start_game(game, from_pid)
       send(self(), :inform_subscriber)
-      :timer.send_interval(@tick, self(), :tick)
+      :timer.send_after(@tick, self(), :tick)
 
       {:reply, :ok, game}
     else
@@ -83,7 +93,7 @@ defmodule FallingBlocks.Game do
     if game.state == :game_over do
       new_game = start_game(new_game(), game.subscriber)
       send(self(), :inform_subscriber)
-      :timer.send_interval(@tick, self(), :tick)
+      :timer.send_after(@tick, self(), :tick)
 
       {:reply, :ok, new_game}
     else
@@ -121,15 +131,30 @@ defmodule FallingBlocks.Game do
   end
 
   @impl true
-  def handle_call(:advance, _from, game) do
-    game = do_advance(game)
+  def handle_call(:fast_mode_on, _from, game) do
+    game = %{game | tick_frequency: @fast_tick_frequency}
+    {:reply, :ok, game}
+  end
+
+  def handle_call(:fast_mode_off, _from, game) do
+    game = %{game | tick_frequency: @default_tick_frequency}
     {:reply, :ok, game}
   end
 
   @impl true
   def handle_info(:tick, game) do
-    game = do_advance(game)
-    {:noreply, game}
+    game =
+      if game.tick_throttle_counter == 0 do
+        do_advance(game)
+      else
+        game
+      end
+
+    if game.state == :running do
+      :timer.send_after(@tick, self(), :tick)
+    end
+
+    {:noreply, %{game | tick_throttle_counter: rem(game.tick_throttle_counter + 1, game.tick_frequency)}}
   end
 
   @impl true
@@ -177,7 +202,7 @@ defmodule FallingBlocks.Game do
     queue = BlockQueue.new()
     board = %Board{}
 
-    %__MODULE__{board: board, block_queue: queue}
+    %__MODULE__{board: board, block_queue: queue, tick_frequency: @default_tick_frequency}
   end
 
   defp start_game(game, subscriber) do
