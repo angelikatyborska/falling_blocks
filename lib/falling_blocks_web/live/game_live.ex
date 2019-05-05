@@ -26,7 +26,7 @@ defmodule FallingBlocksWeb.GameLive do
         </div>
         <% end) %>
 
-        <%= if @game_state.state == :over do %>
+        <%= if @game_state.state == :game_over do %>
           <%= FallingBlocksWeb.GameComponentView.render("game_over.html") %>
         <% end %>
       </div>
@@ -47,9 +47,8 @@ defmodule FallingBlocksWeb.GameLive do
     <div>
       TODO:
       <ul>
-        <li>rotation as part of the queue? nah</li>
-        <li>restart</li>
         <li>pause</li>
+        <li>improved moving</li>
         <li>high score in cookies</li>
         <li>design (azulejo?)</li>
       </ul>
@@ -66,7 +65,7 @@ defmodule FallingBlocksWeb.GameLive do
         socket = assign(socket, :game, game)
         assign(socket, :game_state, Game.get_state(game))
       else
-        assign(socket, :game_state, Game.new_game())
+        assign(socket, :game_state, Game.new_dummy_game())
       end
 
     {:ok, socket}
@@ -86,13 +85,18 @@ defmodule FallingBlocksWeb.GameLive do
 
   @impl true
   def handle_event("move", "ArrowDown", socket) do
-    if socket.assigns.game_state.state == :new do
-      :ok = Game.start(socket.assigns.game)
-      {:noreply, socket}
-    else
-      :ok = Game.advance(socket.assigns.game)
-      {:noreply, socket}
+    case socket.assigns.game_state.state do
+      :new ->
+        :ok = Game.start(socket.assigns.game)
+
+      :running ->
+        :ok = Game.advance(socket.assigns.game)
+
+      :game_over ->
+        :ok = Game.restart(socket.assigns.game)
     end
+
+    {:noreply, socket}
   end
 
   @impl true

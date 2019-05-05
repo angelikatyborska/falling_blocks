@@ -7,7 +7,7 @@ defmodule FallingBlocks.Game do
 
   defstruct board: nil, subscriber: nil, state: :new, block_queue: nil, lines: 0
 
-  @type state :: :new | :running | :over
+  @type state :: :new | :running | :game_over
   @type t() :: %__MODULE__{
           board: Board.t(),
           subscriber: pid(),
@@ -26,6 +26,11 @@ defmodule FallingBlocks.Game do
   @spec start(pid()) :: :ok
   def start(pid) do
     GenServer.call(pid, :start)
+  end
+
+  @spec restart(pid()) :: :ok
+  def restart(pid) do
+    GenServer.call(pid, :restart)
   end
 
   @spec get_state(pid()) :: __MODULE__.t()
@@ -50,12 +55,8 @@ defmodule FallingBlocks.Game do
 
   # This is only exposed so that the LiveView can render a new game during the initial HTTP-only connection
   # without starting the game process.
-  def new_game() do
-    # TODO: rethink this, the queue is random and due to the double-render it will be recreated
-    queue = BlockQueue.new()
-    board = %Board{height: 20, width: 10, static_blocks: []}
-
-    %__MODULE__{board: board, block_queue: queue}
+  def new_dummy_game do
+    %{new_game() | block_queue: []}
   end
 
   # Callbacks ######################################################
@@ -68,13 +69,23 @@ defmodule FallingBlocks.Game do
   @impl true
   def handle_call(:start, {from_pid, _from_ref}, game) do
     if game.state == :new do
-      {block_type, queue} = BlockQueue.pop(game.block_queue)
-      {:ok, board} = Board.set_falling_block(game.board, block_type)
+      game = start_game(game, from_pid)
       send(self(), :inform_subscriber)
       :timer.send_interval(@tick, self(), :tick)
 
-      {:reply, :ok,
-       %{game | state: :running, subscriber: from_pid, board: board, block_queue: queue}}
+      {:reply, :ok, game}
+    else
+      {:reply, :ok, game}
+    end
+  end
+
+  def handle_call(:restart, _from, game) do
+    if game.state == :game_over do
+      new_game = start_game(new_game(), game.subscriber)
+      send(self(), :inform_subscriber)
+      :timer.send_interval(@tick, self(), :tick)
+
+      {:reply, :ok, new_game}
     else
       {:reply, :ok, game}
     end
@@ -150,7 +161,7 @@ defmodule FallingBlocks.Game do
               %{game | board: board, block_queue: queue}
 
             {:game_over, board} ->
-              %{game | state: :over, board: board, block_queue: queue}
+              %{game | state: :game_over, board: board, block_queue: queue}
           end
         end
 
@@ -160,5 +171,18 @@ defmodule FallingBlocks.Game do
     else
       game
     end
+  end
+
+  defp new_game() do
+    queue = BlockQueue.new()
+    board = %Board{}
+
+    %__MODULE__{board: board, block_queue: queue}
+  end
+
+  defp start_game(game, subscriber) do
+    {block_type, queue} = BlockQueue.pop(game.block_queue)
+    {:ok, board} = Board.set_falling_block(game.board, block_type)
+    %{game | state: :running, subscriber: subscriber, board: board, block_queue: queue}
   end
 end
