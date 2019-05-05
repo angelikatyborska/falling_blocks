@@ -25,6 +25,10 @@ defmodule FallingBlocksWeb.GameLive do
           <% end) %>
         </div>
         <% end) %>
+
+        <%= if @game_state.state == :over do %>
+          <%= FallingBlocksWeb.GameComponentView.render("game_over.html") %>
+        <% end %>
       </div>
 
       <div class="panel">
@@ -38,10 +42,6 @@ defmodule FallingBlocksWeb.GameLive do
           <div class="panel-box-content"><%= @game_state.lines %></div>
         </div>
       </div>
-
-      <%= if @game_state.state == :over do %>
-        <div>Game Over</div>
-      <% end %>
     </div>
 
     <div>

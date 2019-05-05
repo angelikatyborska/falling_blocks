@@ -9,6 +9,10 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+.board {
+  position: relative;
+}
+
 .board-row {
   display: flex;
   justify-content: center;

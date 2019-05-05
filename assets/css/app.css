@@ -2,4 +2,5 @@
 
 @import "./game.css";
 @import "./game_component/controls.css";
+@import "./game_component/game_over.css";
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
