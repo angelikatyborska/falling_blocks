@@ -35,7 +35,9 @@ defmodule FallingBlocksWeb.GameLive do
         <h1>Falling Blocks</h1>
         <div class="panel-box">
           <div class="panel-box-title">Next</div>
-          <div class="panel-box-content"><%= Enum.join(@game_state.block_queue, ", ") %></div>
+          <div class="panel-box-content">
+            <%= FallingBlocksWeb.GameComponentView.render("queue.html", queue: @game_state.block_queue) %>
+          </div>
         </div>
         <div class="panel-box">
           <div class="panel-box-title">Lines</div>

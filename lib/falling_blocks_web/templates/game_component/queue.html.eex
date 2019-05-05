@@ -1,0 +1,22 @@
+<div class="board">
+  <% width = 4 %>
+  <% height = 3 %>
+  <%= Enum.map(@queue, fn block_type -> %>
+    <% block = apply(Block, block_type, []) %>
+    <%= 0..(height - 1) |> Enum.map(fn row -> %>
+      <div class="board-row">
+        <%= 0..(width - 1) |> Enum.map(fn column -> %>
+          <%
+            class =
+              if block.parts |> Enum.any?(fn part -> part == {column, row} end) do
+                "block-part--#{block_type}"
+              else
+                ""
+              end
+          %>
+          <div class="block-part <%= class %>"></div>
+        <% end) %>
+      </div>
+    <% end) %>
+  <% end) %>
+</div>

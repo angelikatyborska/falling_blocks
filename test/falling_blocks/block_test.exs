@@ -109,21 +109,25 @@ defmodule FallingBlocks.BlockTest do
 
   describe "width" do
     test "it counts the width" do
-      # TODO: test other types
       assert Block.width(:i) == 4
       assert Block.width(:o) == 2
       assert Block.width(:s) == 3
       assert Block.width(:z) == 3
+      assert Block.width(:j) == 3
+      assert Block.width(:l) == 3
+      assert Block.width(:t) == 3
     end
   end
 
   describe "height" do
     test "it counts the height" do
-      # TODO: test other types
       assert Block.height(:i) == 1
       assert Block.height(:o) == 2
       assert Block.height(:s) == 2
       assert Block.height(:z) == 2
+      assert Block.height(:j) == 2
+      assert Block.height(:l) == 2
+      assert Block.height(:t) == 2
     end
   end
 
