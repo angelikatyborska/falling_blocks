@@ -3,4 +3,5 @@
 @import "./game.css";
 @import "./game_component/controls.css";
 @import "./game_component/game_over.css";
+@import "./game_component/overlay.css";
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";

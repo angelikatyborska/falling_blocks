@@ -3,10 +3,13 @@ body {
 }
 
 .game {
-  display: grid;
   margin: 10px auto;
-  max-width: 800px;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: center;
+}
+
+.game > *:not(:last-child) {
+  margin-right: 20px;
 }
 
 .board {
@@ -19,19 +22,19 @@ body {
 }
 
 .block-part {
-  width: 20px;
-  height: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  width: 3vh;
+  height: 3vh;
+  border-bottom: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
   flex: 0 0 auto;
 }
 
 .board-row:first-child .block-part {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid #d3d3d3;
 }
 
 .block-part:first-child {
-  border-left: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: 1px solid #d3d3d3;
 }
 
 .block-part--o {
@@ -74,7 +77,7 @@ body {
 }
 
 .panel-box {
-  border: 1px solid lightgray;
+  border: 1px solid #d3d3d3;
   margin: 20px 0;
   width: 100%;
 }
@@ -87,7 +90,7 @@ body {
   font-weight: bold;
   font-size: 0.8rem;
   padding: 5px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .panel-box-content {

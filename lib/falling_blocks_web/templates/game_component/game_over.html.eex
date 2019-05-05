@@ -1,4 +1,8 @@
-<div class="game-over">
-  <h2>Game Over</h2>
-  <p>Press <kbd class="key down"><span class="vertical">&downarrow;</span></kbd> to restart.</p>
+<div class="overlay">
+  <div class="overlay-content">
+    <div class="game-over">
+      <h2>Game Over</h2>
+      <p>Press <kbd class="key down"><span class="vertical">&downarrow;</span></kbd> to restart.</p>
+    </div>
+  </div>
 </div>

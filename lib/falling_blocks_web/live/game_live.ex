@@ -7,15 +7,6 @@ defmodule FallingBlocksWeb.GameLive do
   def render(assigns) do
     ~L"""
     <div class="game">
-      <div class="panel panel-left">
-        <div class="panel-box">
-          <div class="panel-box-title">Controls</div>
-          <div class="panel-box-content">
-            <%= FallingBlocksWeb.GameComponentView.render("controls.html") %>
-          </div>
-        </div>
-      </div>
-
       <div class="board" phx-keydown="move" phx-target="window">
         <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
         <div class="board-row">
@@ -28,6 +19,10 @@ defmodule FallingBlocksWeb.GameLive do
 
         <%= if @game_state.state == :game_over do %>
           <%= FallingBlocksWeb.GameComponentView.render("game_over.html") %>
+        <% end %>
+
+        <%= if @game_state.state == :new do %>
+          <%= FallingBlocksWeb.GameComponentView.render("controls.html") %>
         <% end %>
       </div>
 
