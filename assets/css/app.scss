@@ -1,0 +1,12 @@
+/* This file is for your main application css. */
+
+@import "./variables.scss";
+@import "./game.scss";
+@import "./game_component/controls.scss";
+@import "./game_component/game_over.scss";
+@import "./game_component/overlay.scss";
+@import "../../deps/phoenix_live_view/assets/css/live_view.css";
+
+footer {
+  text-align: center;
+}
