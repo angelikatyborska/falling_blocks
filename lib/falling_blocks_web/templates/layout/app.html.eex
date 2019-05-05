@@ -17,6 +17,10 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
+    <footer>
+      <div>Noticed an issue? <a href="https://github.com/angelikatyborska/falling_blocks/issues">Report here.</a></div>
+      <div>Created by <a href="https://angelika.me/">Angelika Tyborska</a>. Powered by <a href="https://github.com/phoenixframework/phoenix_live_view">Phoenix LiveView</a>.</div>
+    </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

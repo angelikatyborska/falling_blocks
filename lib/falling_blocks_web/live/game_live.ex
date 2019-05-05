@@ -45,7 +45,7 @@ defmodule FallingBlocksWeb.GameLive do
       TODO:
       <ul>
         <li>pause</li>
-        <li>improved moving</li>
+        <li>gen server tests</li>
         <li>high score in cookies</li>
         <li>design (azulejo?)</li>
       </ul>
