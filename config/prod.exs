@@ -16,7 +16,10 @@ config :falling_blocks, FallingBlocksWeb.Endpoint,
   server: true,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
-  secret_key_base: System.get_env("FALLING_BLOCKS_ENDPOINT_SECRET")
+  secret_key_base: System.get_env("FALLING_BLOCKS_ENDPOINT_SECRET"),
+  live_view: [
+    signing_salt: System.get_env("FALLING_BLOCKS_LIVE_VIEW_SALT"),
+  ]
 
 # Do not print debug messages in production
 config :logger, level: :info
