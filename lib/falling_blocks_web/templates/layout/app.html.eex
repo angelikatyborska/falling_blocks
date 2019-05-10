@@ -4,10 +4,12 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FallingBlocks · Phoenix Framework</title>
+    <title>Falling Tiles · Phoenix Framework</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="shortcut icon" href="<%= Routes.static_path(@conn, "/favicon.png") %>"/>
   </head>
   <body>
     <header>
@@ -18,14 +20,14 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer>
-      <div>Noticed an issue? <a href="https://github.com/angelikatyborska/falling_blocks/issues">Report here.</a></div>
-      <div>
+      <p>
         Created by <a href="https://angelika.me/">Angelika Tyborska</a>.
         Powered by <a href="https://github.com/phoenixframework/phoenix_live_view">Phoenix LiveView</a>.
-      </div>
-      <div>
+      </p>
+      <p>Noticed an issue? <a href="https://github.com/angelikatyborska/falling_blocks/issues">Report here.</a></p>
+      <p>
         The <a href="https://en.wikipedia.org/wiki/Azulejo">Azulejo</a> vector graphics come from <a href="https://www.vecteezy.com/vector-art/116172-portuguese-tile-vector">vecteezy.com</a>.
-      </div>
+      </p>
     </footer>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>

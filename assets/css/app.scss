@@ -7,6 +7,49 @@
 @import "./game_component/overlay.scss";
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
 
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: $light-blue;
+  font-family: "Roboto", "Helvetica", sans-serif;
+  color: $text-color;
+}
+
 footer {
   text-align: center;
+  font-size: 0.9rem;
+
+  p {
+    margin: 0.5rem 0;
+  }
+}
+
+h1 {
+  color: $wine;
+}
+
+a {
+  color: $wine;
+}
+
+kbd {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 4px;
+  width: $keyboard-width - 4px;
+  font-family: "Roboto Mono", Courier, monospace;
+  text-shadow: 0 1px 0 #ffffff;
+  background-color: $keyboard-gray;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }

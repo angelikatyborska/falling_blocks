@@ -27,15 +27,15 @@ defmodule FallingBlocksWeb.GameLive do
       </div>
 
       <div class="panel">
-        <h1>Falling Blocks</h1>
+        <h1>Falling Tiles</h1>
         <div class="panel-box">
-          <div class="panel-box-title">Next</div>
+          <h3 class="panel-box-title">Next</h3>
           <div class="panel-box-content">
             <%= FallingBlocksWeb.GameComponentView.render("queue.html", queue: @game_state.block_queue) %>
           </div>
         </div>
         <div class="panel-box">
-          <div class="panel-box-title">Lines</div>
+          <h3 class="panel-box-title">Lines</h3>
           <div class="panel-box-content lines"><%= @game_state.lines %></div>
         </div>
       </div>
