@@ -147,12 +147,14 @@ defmodule FallingBlocks.BlockTest do
   end
 
   describe "rows" do
-    test "it returns a list of all rows occupied by this block" do
+    test "it returns a list of all rows occupied by this block, sorted" do
       i = Block.i({2, 1})
       o = Block.o({1, 2})
+      non_standard_block = %Block{type: :unknown, parts: [{2, 4}, {2, 3}, {1, 4}]}
 
       assert Block.rows(i) == [1]
       assert Block.rows(o) == [2, 3]
+      assert Block.rows(non_standard_block) == [3, 4]
     end
   end
 

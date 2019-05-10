@@ -233,6 +233,39 @@ defmodule FallingBlocks.BoardTest do
              i i i i . .
              """
     end
+
+    test "it clears multiple full rows regardless of falling block rotation" do
+      i = Block.i({0, 3})
+      i2 = Block.i({0, 2})
+      i3 = Block.i({0, 1})
+      i4 = Block.i({0, 0})
+      falling_i = %Block{type: :i, parts: [{4, 3}, {4, 2}, {4, 1}, {4, 0}]}
+
+      board = %Board{
+        width: 5,
+        height: 4,
+        static_blocks: [i, i2, i3, i4],
+        falling_block: falling_i
+      }
+
+      {board2, rows_cleared} = Board.advance(board)
+
+      assert inspect(board) == ~s"""
+             i i i i i
+             i i i i i
+             i i i i i
+             i i i i i
+             """
+
+      assert inspect(board2) == ~s"""
+             . . . . .
+             . . . . .
+             . . . . .
+             . . . . .
+             """
+
+      assert rows_cleared == 4
+    end
   end
 
   describe "move" do

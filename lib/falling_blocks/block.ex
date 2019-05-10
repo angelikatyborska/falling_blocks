@@ -165,7 +165,6 @@ defmodule FallingBlocks.Block do
   end
 
   def width(block_type) do
-    # TODO: check if still needed
     __MODULE__
     |> apply(block_type, [{0, 0}])
     |> width
@@ -221,6 +220,7 @@ defmodule FallingBlocks.Block do
     block.parts
     |> Enum.map(&elem(&1, 1))
     |> Enum.uniq()
+    |> Enum.sort()
   end
 
   @doc """
