@@ -43,3 +43,5 @@ npm-debug.log
 
 *.iml
 .idea
+
+*.log

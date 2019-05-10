@@ -10,13 +10,24 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :falling_blocks, FallingBlocksWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
+  http: [port: {:system, "PORT"}],
+  url: [host: "localhost", port: {:system, "PORT"}], # This is critical for ensuring web-sockets properly authorize.
   cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  root: ".",
+  version: Application.spec(:phoenix_distillery, :vsn),
   secret_key_base: System.get_env("FALLING_BLOCKS_ENDPOINT_SECRET")
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+config :logger,
+       backends: [:console, {LoggerFileBackend, :file_backend}],
+       format: "[$level] $message\n"
+
+config :logger, :file_backend,
+       path: "falling_blocks.log",
+       level: :info
 
 # ## SSL Support
 #
