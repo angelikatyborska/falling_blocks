@@ -9,7 +9,9 @@
       <kbd class="key down"><i class="fas fa-caret-down"></i></kbd>
       <kbd class="key right"><i class="fas fa-caret-right"></i></kbd>
       <div class="label right">Right</div>
-      <div class="label down"><div>Start /</div><div>Faster (hold)</div></div>
+      <div class="label down"><div>Faster</div><div>(hold)</div></div>
+      <kbd class="key space">Space</kbd>
+      <div class="label space">Start</div>
     </div>
   </div>
 </div>

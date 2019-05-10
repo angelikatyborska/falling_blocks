@@ -2,7 +2,7 @@
   display: grid;
   text-align: center;
   grid-template-columns: calc(50% - #{$keyboard-width} * 1.5) $keyboard-width $keyboard-width $keyboard-width calc(50% - #{$keyboard-width} * 1.5);
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 .controls > * {
@@ -54,6 +54,18 @@
 
 .label.down {
   grid-row: 4;
+  grid-column-start: 2;
+  grid-column-end: 5;
+}
+
+.key.space {
+  grid-row: 6;
+  grid-column-start: 2;
+  grid-column-end: 5;
+}
+
+.label.space {
+  grid-row: 7;
   grid-column-start: 2;
   grid-column-end: 5;
 }

@@ -84,14 +84,28 @@ defmodule FallingBlocksWeb.GameLive do
   @impl true
   def handle_event("keydown", "ArrowDown", socket) do
     case socket.assigns.game_state.state do
-      :new ->
-        :ok = Game.start(socket.assigns.game)
-
       :running ->
         :ok = Game.fast_mode_on(socket.assigns.game)
 
+      _ ->
+        :ok
+    end
+
+    {:noreply, socket}
+  end
+
+
+  @impl true
+  def handle_event("keydown", " ", socket) do
+    case socket.assigns.game_state.state do
+      :new ->
+        :ok = Game.start(socket.assigns.game)
+
       :game_over ->
         :ok = Game.restart(socket.assigns.game)
+
+      _ ->
+        :ok
     end
 
     {:noreply, socket}
