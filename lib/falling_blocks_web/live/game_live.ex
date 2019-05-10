@@ -94,7 +94,6 @@ defmodule FallingBlocksWeb.GameLive do
     {:noreply, socket}
   end
 
-
   @impl true
   def handle_event("keydown", " ", socket) do
     case socket.assigns.game_state.state do

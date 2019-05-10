@@ -79,7 +79,14 @@ defmodule FallingBlocks.Board.RowTest do
       board = %Board{
         width: 6,
         height: 4,
-        static_blocks: [o_bottom_left, o_bottom_right, o_top_right, half_z_middle, half_s_bottom, i]
+        static_blocks: [
+          o_bottom_left,
+          o_bottom_right,
+          o_top_right,
+          half_z_middle,
+          half_s_bottom,
+          i
+        ]
       }
 
       assert inspect(board) == ~s"""
