@@ -10,7 +10,7 @@ defmodule FallingBlocksWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :falling_blocks,
-    gzip: false,
+    gzip: true,
     only: ~w(css fonts images js favicon.png robots.txt)
 
   # Code reloading can be explicitly enabled under the
