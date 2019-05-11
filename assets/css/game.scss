@@ -1,5 +1,5 @@
 .game {
-  margin: 10px auto;
+  margin: 30px auto;
   display: flex;
   justify-content: center;
 }
@@ -23,8 +23,8 @@
 .block-part {
   width: 26px;
   height: 26px;
-  border-bottom: 1px solid #d3d3d3;
-  border-right: 1px solid #d3d3d3;
+  border-bottom: 1px solid $light-gray;
+  border-right: 1px solid $light-gray;
   flex: 0 0 auto;
   background-color: $white;
   background-repeat: no-repeat;
@@ -33,11 +33,11 @@
 }
 
 .board-row:first-child .block-part {
-  border-top: 1px solid #d3d3d3;
+  border-top: 1px solid $light-gray;
 }
 
 .block-part:first-child {
-  border-left: 1px solid #d3d3d3;
+  border-left: 1px solid $light-gray;
 }
 
 .block-part:not(.block-part--nil) {
@@ -97,12 +97,12 @@
 .panel-box-title {
   font-weight: bold;
   font-size: 0.8rem;
-  padding: 10px;
+  padding: 5px 10px;
   margin: 0;
 }
 
 .panel-box-content {
-  padding: 10px;
+  padding: 5px 10px;
   text-align: center;
 
   .board {

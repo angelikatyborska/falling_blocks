@@ -3,13 +3,14 @@ defmodule FallingBlocks.Game do
 
   require Logger
 
-  alias FallingBlocks.{Board, BlockQueue}
+  alias FallingBlocks.{Board, BlockQueue, Score}
 
   defstruct board: nil,
             subscriber: nil,
             state: :new,
             block_queue: nil,
             lines: 0,
+            score: 0,
             tick_throttle_counter: 0,
             tick_frequency: 1
 
@@ -20,6 +21,7 @@ defmodule FallingBlocks.Game do
           state: state(),
           block_queue: BlockQueue.t(),
           lines: integer(),
+          score: integer(),
           tick_throttle_counter: integer(),
           tick_frequency: integer()
         }
@@ -183,8 +185,11 @@ defmodule FallingBlocks.Game do
     if game.state == :running do
       game =
         if game.board.falling_block do
-          {new_board, rows_cleared} = Board.advance(game.board)
-          %{game | board: new_board, lines: game.lines + rows_cleared}
+          {new_board, lines_cleared} = Board.advance(game.board)
+          lines = game.lines + lines_cleared
+          # TODO: Achtung, hardcoded level
+          score = game.score + Score.lines_cleared(1, lines_cleared)
+          %{game | board: new_board, lines: lines, score: score}
         else
           {block_type, queue} = BlockQueue.pop(game.block_queue)
 

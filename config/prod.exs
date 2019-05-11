@@ -11,26 +11,27 @@ use Mix.Config
 # before starting your production server.
 config :falling_blocks, FallingBlocksWeb.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "falling-tiles.angelika.me", port: {:system, "PORT"}], # This is critical for ensuring web-sockets properly authorize.
+  # This is critical for ensuring web-sockets properly authorize.
+  url: [host: "falling-tiles.angelika.me", port: {:system, "PORT"}],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
   secret_key_base: System.get_env("FALLING_BLOCKS_ENDPOINT_SECRET"),
   live_view: [
-    signing_salt: System.get_env("FALLING_BLOCKS_LIVE_VIEW_SALT"),
+    signing_salt: System.get_env("FALLING_BLOCKS_LIVE_VIEW_SALT")
   ]
 
 # Do not print debug messages in production
 config :logger, level: :info
 
 config :logger,
-       backends: [:console, {LoggerFileBackend, :file_backend}],
-       format: "[$level] $message\n"
+  backends: [:console, {LoggerFileBackend, :file_backend}],
+  format: "[$level] $message\n"
 
 config :logger, :file_backend,
-       path: "falling_blocks.log",
-       level: :info
+  path: "falling_blocks.log",
+  level: :info
 
 # ## SSL Support
 #

@@ -35,21 +35,12 @@ defmodule FallingBlocksWeb.GameLive do
           </div>
         </div>
         <div class="panel-box">
+          <h3 class="panel-box-title">Score</h3>
+          <div class="panel-box-content lines"><%= @game_state.score %></div>
+
           <h3 class="panel-box-title">Lines</h3>
           <div class="panel-box-content lines"><%= @game_state.lines %></div>
-        </div>
       </div>
-    </div>
-
-    <div>
-      TODO:
-      <ul>
-        <li>pause</li>
-        <li>gen server tests</li>
-        <li>high score in cookies</li>
-        <li>finish design</li>
-        <li>rename to Falling Tiles</li>
-      </ul>
     </div>
     """
   end
