@@ -1,5 +1,9 @@
 # FallingBlocks
 
+Deployed as Falling Tiles at [falling-tiles.angelika.me](https://falling-tiles.angelika.me/).
+
+## Setup
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
