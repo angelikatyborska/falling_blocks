@@ -2,7 +2,7 @@
   display: grid;
   text-align: center;
   grid-template-columns: calc(50% - #{$keyboard-width} * 1.5) $keyboard-width $keyboard-width $keyboard-width calc(50% - #{$keyboard-width} * 1.5);
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1.3fr 1fr 1fr 1.3fr 1fr 1.3fr 1fr
 }
 
 .controls > * {
@@ -12,6 +12,9 @@
 .label {
   height: 20px;
   line-height: 20px;
+}
+
+.label.left, .label.right, .label.rotate {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -66,6 +69,18 @@
 
 .label.space {
   grid-row: 7;
+  grid-column-start: 2;
+  grid-column-end: 5;
+}
+
+.key.pause {
+  grid-row: 8;
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.label.pause {
+  grid-row: 9;
   grid-column-start: 2;
   grid-column-end: 5;
 }

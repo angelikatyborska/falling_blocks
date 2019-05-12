@@ -15,7 +15,7 @@ defmodule FallingBlocks.Game do
             tick_throttle_counter: 0,
             tick_frequency: 1
 
-  @type state :: :new | :running | :game_over
+  @type state :: :new | :running | :game_over | :paused
   @type t() :: %__MODULE__{
           board: Board.t(),
           subscriber: pid(),
@@ -39,6 +39,16 @@ defmodule FallingBlocks.Game do
   @spec start(pid()) :: :ok
   def start(pid) do
     GenServer.call(pid, :start)
+  end
+
+  @spec pause(pid()) :: :ok
+  def pause(pid) do
+    GenServer.call(pid, :pause)
+  end
+
+  @spec unpause(pid()) :: :ok
+  def unpause(pid) do
+    GenServer.call(pid, :unpause)
   end
 
   @spec restart(pid()) :: :ok
@@ -97,6 +107,33 @@ defmodule FallingBlocks.Game do
     end
   end
 
+  @impl true
+  def handle_call(:pause, _from, game) do
+    case game.state do
+      :running ->
+        game = %{game | state: :paused}
+        send(self(), :inform_subscriber)
+        {:reply, :ok, game}
+
+      _ ->
+        {:reply, :ok, game}
+    end
+  end
+
+  @impl true
+  def handle_call(:unpause, _from, game) do
+    case game.state do
+      :paused ->
+        game = %{game | state: :running}
+        send(self(), :inform_subscriber)
+        {:reply, :ok, game}
+
+      _ ->
+        {:reply, :ok, game}
+    end
+  end
+
+  @impl true
   def handle_call(:restart, _from, game) do
     if game.state == :game_over do
       new_game = start_game(new_game(), game.subscriber)
@@ -158,7 +195,7 @@ defmodule FallingBlocks.Game do
         game
       end
 
-    if game.state == :running do
+    if game.state == :running || game.state == :paused do
       :timer.send_after(@tick, self(), :tick)
     end
 

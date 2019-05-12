@@ -1,0 +1,8 @@
+<div class="overlay">
+  <div class="overlay-content">
+    <div class="paused">
+      <h2>Paused</h2>
+      <p>Press <kbd class="key down">Space</kbd> or <kbd class="key down">P</kbd> to resume.</p>
+    </div>
+  </div>
+</div>

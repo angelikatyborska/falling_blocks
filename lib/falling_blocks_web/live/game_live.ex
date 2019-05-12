@@ -6,7 +6,7 @@ defmodule FallingBlocksWeb.GameLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <div class="game">
+    <div class="game" phx-blur="pause" phx-target="window">
       <div class="board" phx-keydown="keydown" phx-keyup="keyup" phx-target="window">
         <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
         <div class="board-row">
@@ -19,6 +19,10 @@ defmodule FallingBlocksWeb.GameLive do
 
         <%= if @game_state.state == :game_over do %>
           <%= FallingBlocksWeb.GameComponentView.render("game_over.html") %>
+        <% end %>
+
+        <%= if @game_state.state == :paused do %>
+          <%= FallingBlocksWeb.GameComponentView.render("paused.html") %>
         <% end %>
 
         <%= if @game_state.state == :new do %>
@@ -65,6 +69,28 @@ defmodule FallingBlocksWeb.GameLive do
   end
 
   @impl true
+  def handle_event("pause", _, socket) do
+    :ok = Game.pause(socket.assigns.game)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("keydown", "p", socket) do
+    case socket.assigns.game_state.state do
+      :paused ->
+        :ok = Game.unpause(socket.assigns.game)
+
+      :running ->
+        :ok = Game.pause(socket.assigns.game)
+
+      _ ->
+        :ok
+    end
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event("keydown", "ArrowLeft", socket) do
     :ok = Game.move(socket.assigns.game, :left)
     {:noreply, socket}
@@ -97,6 +123,9 @@ defmodule FallingBlocksWeb.GameLive do
 
       :game_over ->
         :ok = Game.restart(socket.assigns.game)
+
+      :paused ->
+        :ok = Game.unpause(socket.assigns.game)
 
       _ ->
         :ok
