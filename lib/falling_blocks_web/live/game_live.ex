@@ -36,7 +36,7 @@ defmodule FallingBlocksWeb.GameLive do
         </div>
         <div class="panel-box">
           <h3 class="panel-box-title">Score</h3>
-          <div class="panel-box-content lines"><%= @game_state.score %></div>
+          <div class="panel-box-content score"><%= @game_state.score %></div>
 
           <h3 class="panel-box-title">Lines</h3>
           <div class="panel-box-content lines"><%= @game_state.lines %></div>
