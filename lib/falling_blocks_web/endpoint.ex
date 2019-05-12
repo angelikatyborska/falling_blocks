@@ -11,7 +11,7 @@ defmodule FallingBlocksWeb.Endpoint do
     at: "/",
     from: :falling_blocks,
     gzip: true,
-    only: ~w(css fonts images js favicon.png robots.txt)
+    only: ~w(css fonts images js robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
