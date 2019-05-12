@@ -40,6 +40,7 @@ defmodule FallingBlocksWeb.GameLive do
 
           <h3 class="panel-box-title">Lines</h3>
           <div class="panel-box-content lines"><%= @game_state.lines %></div>
+        </div>
       </div>
     </div>
     """
