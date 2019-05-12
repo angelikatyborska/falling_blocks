@@ -1,7 +1,6 @@
 .game {
-  margin: 30px auto;
+  margin: 30px;
   display: flex;
-  justify-content: center;
 }
 
 .game > *:not(:last-child) {
@@ -74,13 +73,7 @@
 
 .panel h1 {
   margin-top: 0;
-}
-
-.panel-left {
-  display: flex;
-  flex-direction: row;
-  align-content: end;
-  align-items: end;
+  white-space: nowrap;
 }
 
 .panel-box {

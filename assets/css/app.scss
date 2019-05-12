@@ -16,11 +16,14 @@ body {
   background: $light-blue;
   font-family: "Roboto", "Helvetica", sans-serif;
   color: $text-color;
+  display: flex;
+  font-size: 16px;
+  // otherwise pressing arrows to play will also scroll
+  overflow: hidden;
 }
 
 footer {
-  margin-top: 60px;
-  text-align: center;
+  margin: 30px;
   font-size: 0.9rem;
 
   p {

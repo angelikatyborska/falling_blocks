@@ -7,6 +7,26 @@ defmodule FallingBlocksWeb.GameLive do
   def render(assigns) do
     ~L"""
     <div class="game" phx-blur="pause" phx-target="window">
+      <div class="panel">
+        <h1>Falling Tiles</h1>
+        <div class="panel-box">
+          <h3 class="panel-box-title">Next</h3>
+          <div class="panel-box-content">
+            <%= FallingBlocksWeb.GameComponentView.render("queue.html", queue: @game_state.block_queue) %>
+          </div>
+        </div>
+        <div class="panel-box">
+          <h3 class="panel-box-title">Score</h3>
+          <div class="panel-box-content score"><%= @game_state.score %></div>
+
+          <h3 class="panel-box-title">Lines</h3>
+          <div class="panel-box-content lines"><%= @game_state.lines %></div>
+
+          <h3 class="panel-box-title">Level</h3>
+          <div class="panel-box-content level"><%= @game_state.level %></div>
+        </div>
+      </div>
+
       <div class="board" phx-keydown="keydown" phx-keyup="keyup" phx-target="window">
         <%= Enum.map((0..(@game_state.board.height - 1)), fn row -> %>
         <div class="board-row">
@@ -28,26 +48,6 @@ defmodule FallingBlocksWeb.GameLive do
         <%= if @game_state.state == :new do %>
           <%= FallingBlocksWeb.GameComponentView.render("controls.html") %>
         <% end %>
-      </div>
-
-      <div class="panel">
-        <h1>Falling Tiles</h1>
-        <div class="panel-box">
-          <h3 class="panel-box-title">Next</h3>
-          <div class="panel-box-content">
-            <%= FallingBlocksWeb.GameComponentView.render("queue.html", queue: @game_state.block_queue) %>
-          </div>
-        </div>
-        <div class="panel-box">
-          <h3 class="panel-box-title">Score</h3>
-          <div class="panel-box-content score"><%= @game_state.score %></div>
-
-          <h3 class="panel-box-title">Lines</h3>
-          <div class="panel-box-content lines"><%= @game_state.lines %></div>
-
-          <h3 class="panel-box-title">Level</h3>
-          <div class="panel-box-content level"><%= @game_state.level %></div>
-        </div>
       </div>
     </div>
     """
