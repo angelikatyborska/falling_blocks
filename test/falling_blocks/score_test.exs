@@ -31,4 +31,20 @@ defmodule FallingBlocks.ScoreTest do
       assert Score.lines_cleared(4, 4) == 4800
     end
   end
+
+  describe "level" do
+    test "it requires current level * 10 lines to level up" do
+      assert Score.level(9) == 1
+      assert Score.level(10) == 2
+      assert Score.level(19) == 2
+      assert Score.level(20) == 3
+    end
+
+    test "it has a max level 8" do
+      assert Score.level(69) == 7
+      assert Score.level(70) == 8
+      assert Score.level(80) == 8
+      assert Score.level(120) == 8
+    end
+  end
 end

@@ -40,6 +40,9 @@ defmodule FallingBlocksWeb.GameLive do
 
           <h3 class="panel-box-title">Lines</h3>
           <div class="panel-box-content lines"><%= @game_state.lines %></div>
+
+          <h3 class="panel-box-title">Level</h3>
+          <div class="panel-box-content level"><%= @game_state.level %></div>
         </div>
       </div>
     </div>

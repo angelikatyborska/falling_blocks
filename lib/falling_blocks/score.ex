@@ -12,4 +12,14 @@ defmodule FallingBlocks.Score do
 
     base * level
   end
+
+  @spec level(integer()) :: integer()
+  def level(current_lines) do
+    level = trunc(current_lines / 10) + 1
+    Enum.min([level, max_level()])
+  end
+
+  def max_level() do
+    8
+  end
 end

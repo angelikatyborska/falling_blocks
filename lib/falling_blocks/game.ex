@@ -11,6 +11,7 @@ defmodule FallingBlocks.Game do
             block_queue: nil,
             lines: 0,
             score: 0,
+            level: 1,
             tick_throttle_counter: 0,
             tick_frequency: 1
 
@@ -22,13 +23,12 @@ defmodule FallingBlocks.Game do
           block_queue: BlockQueue.t(),
           lines: integer(),
           score: integer(),
+          level: integer(),
           tick_throttle_counter: integer(),
           tick_frequency: integer()
         }
 
-  @tick 80
-  @default_tick_frequency 8
-  @fast_tick_frequency 1
+  @tick 50
 
   # API ######################################################
 
@@ -140,12 +140,12 @@ defmodule FallingBlocks.Game do
 
   @impl true
   def handle_call(:fast_mode_on, _from, game) do
-    game = %{game | tick_frequency: @fast_tick_frequency}
+    game = %{game | tick_frequency: fast_tick_frequency()}
     {:reply, :ok, game}
   end
 
   def handle_call(:fast_mode_off, _from, game) do
-    game = %{game | tick_frequency: @default_tick_frequency}
+    game = %{game | tick_frequency: normal_tick_frequency(game)}
     {:reply, :ok, game}
   end
 
@@ -187,9 +187,9 @@ defmodule FallingBlocks.Game do
         if game.board.falling_block do
           {new_board, lines_cleared} = Board.advance(game.board)
           lines = game.lines + lines_cleared
-          # TODO: Achtung, hardcoded level
-          score = game.score + Score.lines_cleared(1, lines_cleared)
-          %{game | board: new_board, lines: lines, score: score}
+          score = game.score + Score.lines_cleared(game.level, lines_cleared)
+          level = Score.level(lines)
+          %{game | board: new_board, lines: lines, score: score, level: level}
         else
           {block_type, queue} = BlockQueue.pop(game.block_queue)
 
@@ -214,12 +214,20 @@ defmodule FallingBlocks.Game do
     queue = BlockQueue.new()
     board = %Board{}
 
-    %__MODULE__{board: board, block_queue: queue, tick_frequency: @default_tick_frequency}
+    %__MODULE__{board: board, block_queue: queue, tick_frequency: normal_tick_frequency()}
   end
 
   defp start_game(game, subscriber) do
     {block_type, queue} = BlockQueue.pop(game.block_queue)
     {:ok, board} = Board.set_falling_block(game.board, block_type)
     %{game | state: :running, subscriber: subscriber, board: board, block_queue: queue}
+  end
+
+  defp normal_tick_frequency(game \\ %{level: 1}) do
+    Enum.max([3, Score.max_level() - game.level + 3])
+  end
+
+  defp fast_tick_frequency() do
+    1
   end
 end
